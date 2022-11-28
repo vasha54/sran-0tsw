@@ -148,4 +148,6 @@ STATICFILES_DIRS=(os.path.join(BASE_DIR,'static'),)
 
 NAME_APP= 'Sistema Gestión para la Promoción de Recursos Turísticos con Realidad Aumentada Nivel-0'
 
+NAME_APP_SHORT = 'SGPRTRAN-0'
+
 ITEM_PER_PAGE = 5

@@ -22,6 +22,7 @@ from django.conf import settings
 
 
 import accescontrol.urls
+import touristresource.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,7 +34,8 @@ urlpatterns = [
     path('report',ReportView.as_view(), name='report'),
     path('faq',FAQView.as_view(), name='faq'),
 
-    path('accescontrol/',include(accescontrol.urls))
+    path('accescontrol/',include(accescontrol.urls)),
+    path('touristresource/',include(touristresource.urls)),
     
 ]
 

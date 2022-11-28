@@ -8,7 +8,7 @@ from django.views.decorators.cache import cache_control
 
 from application.forms import LoginForm
 
-from core.settings import NAME_APP
+from core.settings import NAME_APP,NAME_APP_SHORT
 
 from accescontrol.models import UserDRPA
 # Create your views here.
@@ -25,7 +25,8 @@ class ViewApp(View):
     
     def getDataInit(self,_request=None):
         dataInit = {
-            'nameApp':NAME_APP
+            'nameApp':NAME_APP,
+            'nameAppShort' :NAME_APP_SHORT
         }
         
         if _request != None:

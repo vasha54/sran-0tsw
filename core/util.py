@@ -1,3 +1,5 @@
+from django.forms import BaseFormSet
+
 def limitPagesShow(_min,_current,_max):
     limits=[]
     if _current - 2 >=_min:
@@ -28,3 +30,12 @@ def canRemoveUserDRPA(_user):
     canRemove = True
     #TODO Falta definir bajo que criterios vamos a eliminar los usuarios
     return canRemove
+
+
+class RequeridFormSet(BaseFormSet):
+    def __init__(self,*args,**kwargs):
+        super(RequeridFormSet,self).__init__(*args,**kwargs)
+        for form in self.forms:
+            form.empty_permitted = False
+
+

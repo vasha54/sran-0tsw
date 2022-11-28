@@ -2,17 +2,17 @@
 
 {% load static %}
 
-{% block title %} {{nameApp}} - Registrar usuario {% endblock %}
+{% block title %} {{nameApp}} - Registrar Recurso Turístico {% endblock %}
 
 {% block  breadcrumb %}
 
 <div class="pagetitle">
-  <h1>Registrar usuario</h1>
+  <h1>Registrar recurso turístico</h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/home">{{ nameAppShort }}</a></li>
-      <li class="breadcrumb-item"><a href="/accescontrol"> Usuarios</a></li>
-      <li class="breadcrumb-item active">Registrar usuario</li>
+      <li class="breadcrumb-item"><a href="/touristresource"> Recursos Turísticos</a></li>
+      <li class="breadcrumb-item active">Registrar Recurso Turístico</li>
     </ol>
   </nav>
 </div><!-- End Page Title -->
@@ -33,7 +33,7 @@
         <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
 
           <li class="nav-item" role="presentation">
-            <button class="nav-link card-title" >Registrar usuario</button>
+            <button class="nav-link card-title" >Registrar Recurso Turístico</button>
           </li>
         </ul>
         <div class="tab-content pt-2">
@@ -46,35 +46,22 @@
   
                 <!-- Vertical Form -->
                 <form class="row g-3 mt-4" method="post" action=""> {% csrf_token %} 
-                  <div class="col-8 row">
-                    <div class="col-6">
+                  <div class="col-12 row">
+                    <div class="col-4">
                       
-                      <label for="id_first_name" class="form-label">Nombre</label>
-                      {{form.first_name}}<br>
-                      <label for="id_last_name" class="form-label">Apellidos</label>
-                      {{form.last_name}}<br>
-                      <label for="id_numberPhone" class="form-label">Numero de telefono</label>
-                      {{form.numberPhone}}<br>
-                      <label for="id_typeAccount" class="form-label">Tipo de cuenta</label>
-                      {{form.typeAccount}}<br>
+                      <label for="id_name" class="form-label">Nombre</label>
+                      {{form.name}}<br>
                     </div>
-                    <div class="col-6">
-                      <label for="id_username" class="form-label">Usuario</label>
-                      {{form.username}}<br>
-                      <label for="id_email" class="form-label">Email</label>
-                      {{form.email}}<br>
-                      <label for="id_numberMobile" class="form-label">Numero de movil</label>
-                      {{form.numberMobile}}<br>
-                      <label for="id_numberMobile" class="form-label">Contraseña</label>
-                      {{form.password}}<br>
-                    </div> 
-                   
+                    <div class="col-8">
+                      <label for="id_description" class="form-label">Descripción</label>
+                      {{form.description}}<br>
+                    </div>
                   </div>
-                  <div class="col-4 row">
-                    <label for="id_logo" class="form-label">Foto de perfil</label>
-                    <img width="50%" src="{{user.logo.url}}">
-                    {{form.logo}}
-                  </div>  
+                  
+                  
+                  
+                  
+                  
 
                   <div class="col-12">
                     {% if form.errors %}

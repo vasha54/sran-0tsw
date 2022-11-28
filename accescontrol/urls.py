@@ -3,7 +3,7 @@ from django.urls import path, include
 
 from accescontrol.views import ListViewAccesControl, AddUsserAccesControl, UpdateUsserAccesControl, DetailsUsserAccesControl, removeRolUsserAccesControl,changeStatusUsserAccesControl, removeUsserAccesControl, getRolesAviableThisUsserAccesControl, addRolesThisUsserAccesControl
 
-app_name = 'accescontrol'
+
 
 urlpatterns = [
     path('',ListViewAccesControl.as_view(), name='listAccesControl'),
