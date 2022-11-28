@@ -33,7 +33,7 @@
         <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
 
           <li class="nav-item" role="presentation">
-            <button class="nav-link card-title" >Registrar Recurso Turístico</button>
+            <label class="nav-link card-title" >Registrar Recurso Turístico</label>
           </li>
         </ul>
         <div class="tab-content pt-2">
@@ -45,20 +45,59 @@
                
   
                 <!-- Vertical Form -->
-                <form class="row g-3 mt-4" method="post" action=""> {% csrf_token %} 
+                <form class="row g-3 mt-4" method="post" action="" enctype="multipart/form-data"> {% csrf_token %} 
                   <div class="col-12 row">
                     <div class="col-4">
                       
                       <label for="id_name" class="form-label">Nombre</label>
                       {{form.name}}<br>
+                      <div class="form-check">
+                        {{form.hasImages}}
+                        <label class="form-check-label" for="gridCheck2">
+                          {{form.hasImages.label}}
+                        </label>
+                      </div>
                     </div>
                     <div class="col-8">
                       <label for="id_description" class="form-label">Descripción</label>
-                      {{form.description}}<br>
+                      {{form.description}}
                     </div>
                   </div>
                   
-                  
+                  <div class="col-12 ">
+                    <fieldset>
+                      <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <label class="nav-link card-title" >Imagenes asociadas al recurso</label>
+                        </li>
+                      </ul>
+                      <div id="listImage" class="row">
+                        {{ formMultipleImageTR.management_form }}
+                          {% for formI in formMultipleImageTR %}
+                            <div class="image-form row mt-3 py-4 border rounded">
+                                <div class="col-4">
+                                  <label for="id_name" class="form-label">Nombre</label>
+                                  {{formI.name}}<br>
+                                  {{formI.image}}<br>
+                                  <button class="btn btn-danger delete-image-form mt-3" type="button">
+                                    <i class="bi bi-trash delete-image-form-icon"></i>
+                                  </button> 
+                                </div>
+                                <div class="col-8">
+                                  <label for="id_description" class="form-label">Descripción</label>
+                                    {{formI.description}}
+                                </div>
+                             </div>
+                          {% endfor %}
+                          
+                            <button class="btn btn-success col-1 mt-2"
+                                id="add-image-form"> <i class="bi bi-plus"></i>
+                            </button>
+                         
+                      </div>  
+                    </fieldset>
+
+                  </div>  
                   
                   
                   
@@ -72,7 +111,16 @@
                   {% endif %}
                   </div>
                   
-
+                  <div class="col-12">
+                    {% for formE in formErrors %}
+                      {% if formE.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <i class="bi bi-exclamation-octagon me-1"></i>
+                            {{ formE.errors }}
+                        </div>  
+                      {% endif %}
+                    {% endfor %}
+                  </div>
                  
               
                 <div class="col-12 row">
@@ -94,4 +142,8 @@
     </div>
   </div>
 </div>
+
+
+<script src="{% static js %}js/touristresource_add.js"></script>
+
 {% endblock %}

@@ -12,7 +12,7 @@ def renameFile(instance,filename):
 
 class TouristResource(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField("Nombre", blank=True, max_length=100)
+    name = models.CharField("Nombre", null=False, blank=False,max_length=100)
     description = models.TextField("Descripción", null=False, blank=False, max_length=255)
     
     class Meta:
@@ -22,9 +22,9 @@ class TouristResource(models.Model):
 class TouristResourceImage(models.Model):
     idTouristResource=models.ForeignKey(TouristResource,verbose_name="Recurso Turísticos",on_delete=models.CASCADE)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField("Nombre", blank=True, max_length=100)
-    description = models.TextField("Descripción", null=False, blank=False, max_length=255)
-    image= models.ImageField("Logotipo",upload_to=renameFile,null=False, blank=False)
+    name = models.CharField("Nombre", null=True, blank=True, max_length=100)
+    description = models.TextField("Descripción", null=True, blank=True, max_length=255)
+    image= models.ImageField(verbose_name="Imagen del recurso",upload_to=renameFile,null=False)
     directorySave = 'images_resources'
     
     class Meta:
