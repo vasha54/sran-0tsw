@@ -64,3 +64,12 @@ mainForm.addEventListener("click",function(event){
           updateForm();
         }
       });
+
+
+function hasImageChange(_element){
+    if ($(_element)[0].checked == true){
+        $("#tabImages").show();
+    }else{
+        $("#tabImages").hide();
+    }
+}

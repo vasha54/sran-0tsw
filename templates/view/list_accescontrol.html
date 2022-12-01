@@ -137,7 +137,7 @@
                   </table>
                   {% if users.has_other_pages %}
                     <ul class="pagination justify-content-center">
-                      {% if workers.has_previous %}
+                      {% if users.has_previous %}
                       <li class="page-item">
                         <a class="page-link" href="/accescontrol/?pageSU={{ users.previous_page_number }}&patternSearch={{patternSearch}}" 
                             aria-label="Previous">
@@ -156,11 +156,11 @@
                         {% endif %} 
                       {% endfor %}
                       
-                      {% if workers.has_next %}
+                      {% if users.has_next %}
                       <li class="page-item">
                         <a class="page-link" href="/accescontrol/?pageSU={{ users.next_page_number }}&patternSearch={{patternSearch}}" 
                             aria-label="Previous">
-                          <span aria-hidden="true">«</span>
+                            <span aria-hidden="true">»</span>
                         </a>
                       </li>
                       {% endif %}

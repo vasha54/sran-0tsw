@@ -12,6 +12,7 @@ class TouristResourceAddForm(forms.ModelForm):
         self.fields['description'].widget.attrs['rows'] = 6
         self.fields['description'].widget.attrs['style'] = 'resize: none;'
         self.fields['hasImages'].widget.attrs['class'] = 'form-check-input'
+        self.fields['hasImages'].widget.attrs['onchange'] = 'hasImageChange(this)'
         
     
     class Meta:

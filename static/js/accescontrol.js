@@ -1,6 +1,6 @@
 
 function aviableRolUser(_usser) {
-    console.log(_usser);
+    
     $.ajax({
         data : {},
         url : '/accescontrol/rolesaviables/'+_usser,

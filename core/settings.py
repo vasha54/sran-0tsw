@@ -150,4 +150,4 @@ NAME_APP= 'Sistema Gestión para la Promoción de Recursos Turísticos con Reali
 
 NAME_APP_SHORT = 'SGPRTRAN-0'
 
-ITEM_PER_PAGE = 5
+ITEM_PER_PAGE = 2

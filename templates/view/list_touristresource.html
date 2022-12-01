@@ -7,7 +7,7 @@
 {% block  breadcrumb %}
 
 <div class="pagetitle">
-  <h1>Usuarios</h1>
+  <h1>Recursos Turísticos</h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/home">{{ nameAppShort }}</a></li>
@@ -79,53 +79,32 @@
                   <table class="table table-borderless ">
                     <thead>
                       <tr>
-                        <th scope="col justify-content-center">Usuario</th>
-                        <th scope="col justify-content-center">Nombre y Apellidos</th>
-                        <th scope="col justify-content-center">Roles</th>
-                        <th scope="col justify-content-center">Activo</th>
+                        <th scope="col justify-content-center">Nombre</th>
+                        <th scope="col justify-content-center">Descripción</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
-                      {% for user in users %}
+                      {% for touristR in touristResources %}
                        <tr>
-                          <td width="20%"> {{ user.username }}</td>
-                          <td width="30%">{{ user.nameCompleted }}</td>
-                          <td width="25%">
-                            {% for rol in user.getRoles %}
-
-                              <a href="/accescontrol/removerol/{{rol}}/{{user.username}}" 
-                               class="badge bg-primary" title="Click para remover el rol al usuario"  
-                               data-bs-placement="top" data-bs-toggle="tooltip">{{rol}}</a>
-
-                            {% endfor %}
-                            <span onclick="aviableRolUser('{{user.username}}')" style="font-size: 1.25rem;" 
-                            title="Click para definir nuevo rol al usuario"  data-bs-placement="top" 
-                            data-bs-toggle="tooltip"><i class="bi bi-file-plus-fill "></i></span>
-                          </td>
-                          <td width="10%" >
-                            <h5><a href="/accescontrol/changestatus/{{user.username}}">
-                              {% if user.is_active %}
-                                <i class="bi bi-toggle-on " 
-                                  title="Click para deshabilitar al usuario"  
-                                  data-bs-placement="top" data-bs-toggle="tooltip"></i>
-                              {% else %} 
-                                <i class="bi bi-toggle-off " 
-                                  title="Click para habilitar al usuario"  
-                                  data-bs-placement="top" data-bs-toggle="tooltip"></i>  
-                               {% endif %} 
-                              </a></h5>
-                          </td>
-                          <td width="15%"> 
-                            <a href="/accescontrol/detail/{{user.username}}">
-                            <i  class="bi bi-eye justify-content-center" title="Detalles"  data-bs-placement="top" data-bs-toggle="tooltip"> </i>
+                          <td width="20%"> {{ touristR.name }}</td>
+                          <td width="60%">{{ touristR.descriptionShort }}</td>
+                          
+                          
+                          <td width="20%"> 
+                            <a onclick="showQR('{{touristR.pk}}')">
+                              <i class="bi bi-upc justify-content-center" title="Ver QR"  
+                              data-bs-placement="top" data-bs-toggle="tooltip"> </i>
                             </a>
-                            <a href="/accescontrol/update/{{user.username}}">
+                            <a href="/touristresource/detail/{{touristR.pk}}">
+                            <i class="bi bi-eye justify-content-center" title="Detalles"  data-bs-placement="top" data-bs-toggle="tooltip"> </i>
+                            </a>
+                            <a href="/touristresource/update/{{touristR.pk}}">
                               <i class="bi bi-pencil-square justify-content-center" 
                                 title="Modificar"  
                                 data-bs-placement="top" data-bs-toggle="tooltip"> </i>
                             </a>
-                            <a href="/accescontrol/remove/{{user.username}}">
+                            <a href="/touristresource/remove/{{touristR.pk}}">
                               <i class="bi bi-trash justify-content-center" title="Eliminar"  
                               data-bs-placement="top" data-bs-toggle="tooltip"> </i></a></td>
                        </tr>
@@ -135,32 +114,32 @@
                       
                     </tbody>
                   </table>
-                  {% if users.has_other_pages %}
+                  {% if touristResources.has_other_pages %}
                     <ul class="pagination justify-content-center">
-                      {% if workers.has_previous %}
+                      {% if touristResources.has_previous %}
                       <li class="page-item">
-                        <a class="page-link" href="/accescontrol/?pageSU={{ users.previous_page_number }}&patternSearch={{patternSearch}}" 
+                        <a class="page-link" href="/touristresource/?pageSU={{ touristResources.previous_page_number }}&patternSearch={{patternSearch}}" 
                             aria-label="Previous">
                           <span aria-hidden="true">«</span>
                         </a>
                       </li>
                       {% endif %}
                       
-                      {% for i in users.paginator.page_range %}
-                        {% if lPLUser <= i and i <= lPRUser %}
-                            {% if users.number == i %}
+                      {% for i in touristResources.paginator.page_range %}
+                        {% if lPLTouristResource <= i and i <= lPRTouristResource %}
+                            {% if touristResources.number == i %}
                               <li class="page-item"><a class="page-link"><b>{{i}}</b></a></li>
                             {% else %}
-                              <li class="page-item"><a class="page-link" href="/accescontrol/?pageSU={{i}}&patternSearch={{patternSearch}}">{{i}}</a></li>
+                              <li class="page-item"><a class="page-link" href="/touristresource/?pageSU={{i}}&patternSearch={{patternSearch}}">{{i}}</a></li>
                             {% endif %}
                         {% endif %} 
                       {% endfor %}
                       
-                      {% if workers.has_next %}
+                      {% if touristResources.has_next %}
                       <li class="page-item">
-                        <a class="page-link" href="/accescontrol/?pageSU={{ users.next_page_number }}&patternSearch={{patternSearch}}" 
-                            aria-label="Previous">
-                          <span aria-hidden="true">«</span>
+                        <a class="page-link" href="/touristresource/?pageSU={{ touristResources.next_page_number }}&patternSearch={{patternSearch}}" 
+                            aria-label="Next">
+                            <span aria-hidden="true">»</span>
                         </a>
                       </li>
                       {% endif %}
@@ -189,51 +168,23 @@
     
      
        
-        <div class="modal fade" id="newRoles" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Asignar nuevos roles</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body" id="bodyModal">
-                    <input class="form-control" style="display: none;" name="urlRequest" id="urlRequest">
-                    <input class="form-control" style="display: none;" name="username" id="username">
-                    <div class="listRol" id="listRol">
-                      
-                    </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="acceptButtonRol()">Aceptar</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                
-              </div>
-            </div>
+    <div class="modal fade" id="fullscreenModal" tabindex="-1" style="display: none;" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Full Screen Modal</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-        </div><!-- End Disabled Backdrop Modal-->
-
-        
-        <div class="modal fade" id="notRoles" tabindex="-1" data-bs-backdrop="false" style="display: none;" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Asignar nuevos roles</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                  <i class="bi bi-exclamation-octagon me-1"></i>
-                    A este usuario no se le puede asignar más roles del sistema.
-                </div>
-              </div>
-              <div class="modal-footer">
-               
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
-                
-              </div>
-            </div>
+          <div class="modal-body">
+            Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
+      </div>
+    </div>
     
    
      
@@ -242,6 +193,6 @@
 
 
     <script src="{% static js %}js/init_ajax.js"></script>
-    <script src="{% static js %}js/accescontrol.js"></script>
+    <script src="{% static js %}js/touristresource.js"></script>
 
 {% endblock %}

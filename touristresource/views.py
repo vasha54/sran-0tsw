@@ -17,10 +17,77 @@ class ListViewTouristResource(ViewApp):
         return super(ListViewTouristResource,self).dispatch(*args,**kwargs)
     
     def get(self, request, *args, **kwargs):
-        return super(ListViewTouristResource,self).get(request, *args, **kwargs)
+        self.data = self.getDataInit(request)
+        
+        patternSearch = ''
+        touristResources = None 
+        
+        if 'patternSearch' in request.GET.keys():
+            patternSearch = request.GET['patternSearch']
+            
+        listTouristResource = TouristResource.objects.searchPattern(patternSearch)
+            
+        pageSU=request.GET.get('pageSU',1)
+        
+        paginatoTouristResource=Paginator(listTouristResource,ITEM_PER_PAGE)
+        
+        try:
+            pageTouristResource = int(pageSU)
+        except PageNotAnInteger:
+            pageTouristResource = paginatoTouristResource.page(1)
+        except EmptyPage:
+            pageTouristResource = int(paginatoTouristResource.num_pages)
+        
+        try:
+            touristResources = paginatoTouristResource.page(pageTouristResource)
+        except:
+            touristResources = paginatoTouristResource.page(pageTouristResource-1)
+            
+        limitPagesTouristResource=util.limitPagesShow(1,pageTouristResource,paginatoTouristResource.num_pages)
+        
+        self.data['patternSearch']=patternSearch
+        self.data['touristResources']=touristResources
+        self.data['lPLTouristResource']=limitPagesTouristResource[0]
+        self.data['lPRTouristResource']=limitPagesTouristResource[1]
+        
+        return render(request,self.template_name,self.data)
+        
     
     def post(self, request, *args, **kwargs):
-        return super(ListViewTouristResource,self).post(request, *args, **kwargs)
+        self.data = self.getDataInit(request)
+        
+        patternSearch = ''
+        touristResources = None 
+        
+        if 'patternSearch' in request.POST.keys():
+            patternSearch = request.POST['patternSearch']
+            
+        listTouristResource = TouristResource.objects.searchPattern(patternSearch)
+            
+        pageSU=request.GET.get('pageSU',1)
+        
+        paginatoTouristResource=Paginator(listTouristResource,ITEM_PER_PAGE)
+        
+        try:
+            pageTouristResource = int(pageSU)
+        except PageNotAnInteger:
+            pageTouristResource = paginatoTouristResource.page(1)
+        except EmptyPage:
+            pageTouristResource = int(paginatoTouristResource.num_pages)
+        
+        try:
+            touristResources = paginatoTouristResource.page(pageTouristResource)
+        except:
+            touristResources = paginatoTouristResource.page(pageTouristResource-1)
+            
+        limitPagesTouristResource=util.limitPagesShow(1,pageTouristResource,paginatoTouristResource.num_pages)
+        
+        self.data['patternSearch']=patternSearch
+        self.data['touristResources']=touristResources
+        self.data['lPLTouristResource']=limitPagesTouristResource[0]
+        self.data['lPRTouristResource']=limitPagesTouristResource[1]
+        
+        return render(request,self.template_name,self.data)
     
 class AddTouristResource(ViewApp):
     
@@ -61,26 +128,30 @@ class AddTouristResource(ViewApp):
         dataMultipleFormImage = []
         formErrors = []
         
-        for form in formMultipleImageTR:
-            if form.is_valid() == True:
-                fill = {'description':form.cleaned_data['description'],
+        hasImage=formResource.cleaned_data['hasImages']
+        
+        if hasImage == True:
+            for form in formMultipleImageTR:
+                if form.is_valid() == True:
+                    fill = {'description':form.cleaned_data['description'],
                         'name':form.cleaned_data['name'],
                         'image':form.cleaned_data['image'],}
-                dataMultipleFormImage.append(fill)
-            else:
-                blank = {'description':'',
-                        'name':'',
-                        'image':'',}
-                dataMultipleFormImage.append(blank)
-                validFAllImage = False
-                formErrors.append(form) 
+                    dataMultipleFormImage.append(fill)
+                else:
+                    blank = {'description':'',
+                             'name':'',
+                             'image':'',}
+                    dataMultipleFormImage.append(blank)
+                    validFAllImage = False
+                    formErrors.append(form) 
         
         if validFResource and validFAllImage:
             resource = formResource.save()
-            for form in formMultipleImageTR:
-                imageResource = form.save(commit=False)
-                imageResource.idTouristResource = resource
-                imageResource.save()
+            if hasImage == True:
+                for form in formMultipleImageTR:
+                    imageResource = form.save(commit=False)
+                    imageResource.idTouristResource = resource
+                    imageResource.save()
             return HttpResponseRedirect(request.POST['urlBack'])
         else:
             
