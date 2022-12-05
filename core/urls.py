@@ -23,6 +23,7 @@ from django.conf import settings
 
 import accescontrol.urls
 import touristresource.urls
+import api.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,6 +37,8 @@ urlpatterns = [
 
     path('accescontrol/',include(accescontrol.urls)),
     path('touristresource/',include(touristresource.urls)),
+    
+    path('api/',include(api.urls)),
     
 ]
 

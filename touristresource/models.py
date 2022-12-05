@@ -58,7 +58,7 @@ class TouristResource(models.Model):
         return descriShort
     
 class TouristResourceImage(models.Model):
-    idTouristResource=models.ForeignKey(TouristResource,verbose_name="Recurso Turísticos",on_delete=models.CASCADE)
+    idTouristResource=models.ForeignKey(TouristResource,related_name='images',verbose_name="Recurso Turísticos",on_delete=models.CASCADE)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField("Nombre", null=True, blank=True, max_length=100)
     description = models.TextField("Descripción", null=True, blank=True, max_length=255)

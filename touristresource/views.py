@@ -9,6 +9,10 @@ from touristresource.forms import TouristResourceAddForm, TouristResourceUpdateF
 from core.settings import ITEM_PER_PAGE
 from core import util
 
+    
+    
+    
+    
 class ListViewTouristResource(ViewApp):
     
     template_name = 'list_touristresource.html'
@@ -194,9 +198,22 @@ class DetailsTouristResource(ViewApp):
         return super(DetailsTouristResource, self).dispatch(request, *args, **kwargs)
     
     def get(self, request, resource_id, *args, **kwargs):
-        self.data = self.getDataInit(request)
-        return render(request,self.template_name,self.data)
-    
+        
+        host = request.META['HTTP_HOST']
+        referer = request.META['HTTP_REFERER']
+        url = referer.split(host)[1]
+        
+        try:
+            resource = TouristResource.objects.get(id=resource_id)
+            images = TouristResourceImage.objects.filter(idTouristResource=resource)
+            self.data = self.getDataInit(request)
+            self.data['resource'] = resource
+            self.data['images'] = images
+            util.generateQRTouristResource(request,resource) 
+            return render(request,self.template_name,self.data)
+        except TouristResource.DoesNotExist:
+            return HttpResponseRedirect(url)
+        
     def post(self, request, resource_id, *args, **kwargs):
         return self.get(request,resource_id,*args,**kwargs)
     
@@ -207,6 +224,11 @@ def removeTouristResource(request, resource_id, *arqs, **kwargs):
     url = referer.split(host)[1]
     try:
         resource = TouristResource.objects.get(id=resource_id)
+        images = TouristResourceImage.objects.filter(idTouristResource=resource)
+        for image in images:
+            #TODO borrar del disco duro las imagenes 
+            pass
+        #TODO borrar la imagen QR del recurso en disco
         resource.delete()
     except TouristResource.DoesNotExist:
         pass
