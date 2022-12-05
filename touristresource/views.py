@@ -156,6 +156,7 @@ class AddTouristResource(ViewApp):
                     imageResource = form.save(commit=False)
                     imageResource.idTouristResource = resource
                     imageResource.save()
+            util.generateQRTouristResource(request,resource)
             return HttpResponseRedirect(request.POST['urlBack'])
         else:
             
