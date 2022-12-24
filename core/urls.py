@@ -15,31 +15,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from application.views import LoginView, HomeView, ContactView, ProfileView, ReportView, FAQView, logoutView
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import static,staticfiles_urlpatterns
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 
-
+from core.util import set_language
 import accescontrol.urls
-import touristresource.urls
-import api.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',LoginView.as_view(), name='index'),
-    path('home',HomeView.as_view(), name='home'),
-    path('contact',ContactView.as_view(), name='contact'),
-    path('profile',ProfileView.as_view(), name='profile'),
-    path('logout',logoutView, name='logout'),
-    path('report',ReportView.as_view(), name='report'),
-    path('faq',FAQView.as_view(), name='faq'),
-
     path('accescontrol/',include(accescontrol.urls)),
-    path('touristresource/',include(touristresource.urls)),
     
-    path('api/',include(api.urls)),
-    
+]
+
+urlpatterns = [
+    *i18n_patterns (*urlpatterns,prefix_default_language=False),
+     path('set_lenguage',set_language,name='set_language')
+     
 ]
 
 urlpatterns +=staticfiles_urlpatterns()

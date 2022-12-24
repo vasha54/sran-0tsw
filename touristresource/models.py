@@ -11,37 +11,51 @@ def renameFile(instance,filename):
     filename="%s.%s" % (uuid.uuid4(),ext)
     return os.path.join(instance.directorySave,filename)
 
-class TouristResourceManager (models.Manager):
+
+class ManagerTourismType(models.Manager):
     
     def searchPattern(self,_patterSearch=None):
         _patterSearch = str(_patterSearch).strip()
-        
-        touristResource = None 
+        typeProduct = None
         
         if _patterSearch != None and len(_patterSearch)!=0:
-            filter = Q(name__contains=_patterSearch)
+            filter = Q(type__contains=_patterSearch)
             filter = Q(filter | Q(description__contains=_patterSearch))
-            
-            touristResource = self.filter(filter).order_by('last_name')
+            typeProduct = self.filter(filter)
         else:
-            touristResource = self.all().order_by('name')
+            typeProduct = self.all()
         
-        return touristResource
+        return typeProduct
     
-    
-    
-    
+    def existThisSLUG(self, _slug,_pk=None):
+        exist = False
+        count = 0
+        
+        if _pk == None:
+            count = self.filter(slug = _slug).count()
+        else:
+            count = self.exclude(pk=_pk).filter(slug = _slug).count()    
+        
+        if count != 0:
+            exist = True
+        return exist
 
-class TouristResource(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField("Nombre", null=False, blank=False,max_length=100)
-    description = models.TextField("Descripción", null=False, blank=False, max_length=10000)
+class TourismType(models.Model):
+    idTT = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    type = models.CharField("Tipo de turismo", null=False, blank=False,max_length=30,default='')
+    description = models.TextField("Descripción", null=False, blank=True, max_length=10000)
+    slug = models.CharField("slug", null=False,max_length=30,unique=True)
     
-    objects = TouristResourceManager()
+    objects = ManagerTourismType()
+    
     class Meta:
-        verbose_name = 'Recurso Turístico'
-        verbose_name_plural = 'Recursos Turísticos'
-        
+        verbose_name ='Tipo de Turismo'    
+        verbose_name_plural = 'Tipos de Turismo'
+        ordering = ('type',)
+    
+    def __str__(self):
+        return f'{self.type}'
+    
     def descriptionShort(self):
         descriShort = ""
         words = self.description.split()
@@ -56,16 +70,3 @@ class TouristResource(models.Model):
         if index < len(words):
             descriShort = descriShort +" ..."
         return descriShort
-    
-class TouristResourceImage(models.Model):
-    idTouristResource=models.ForeignKey(TouristResource,related_name='images',verbose_name="Recurso Turísticos",on_delete=models.CASCADE)
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField("Nombre", null=True, blank=True, max_length=100)
-    description = models.TextField("Descripción", null=True, blank=True, max_length=255)
-    image= models.ImageField(verbose_name="Imagen del recurso",upload_to=renameFile,null=False)
-    directorySave = 'images_resources'
-    
-    class Meta:
-        verbose_name = 'Imagen del Recurso Turístico'
-        verbose_name_plural = 'Imagenes del Recursos Turísticos'
-    

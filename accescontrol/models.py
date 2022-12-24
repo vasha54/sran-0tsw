@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import AbstractUser, Group, UserManager
 from django.core.validators import RegexValidator
-from django.db.models import Q
+from django.db.models import Q, Value
+from django.db.models.functions import Concat
 
 import os
 import uuid
@@ -23,7 +24,6 @@ class UserDRPAManager(UserManager):
             temail = ' '
             tis_staff = 0
             tis_active = 1
-            ttypeAccount =''
             tnumberPhone =''
             tnumberMobile =''
             tpassword = ''
@@ -39,14 +39,12 @@ class UserDRPAManager(UserManager):
                 tlast_name = tlast_name.join(_person['sn'])   
             if 'mail' in _person.keys():
                 temail = temail.join(_person['mail'])
-            if 'typeAccount' in _person.keys():
-                ttypeAccount = _person['typeAccount']
             if 'rol' in _person.keys():
                 rol = _person['rol']
                 
             usser = UserDRPA(username=tusername,is_staff=tis_staff,
                              is_active=tis_active,first_name=tfirst_name,last_name=tlast_name,email=temail,
-                             typeAccount=ttypeAccount,numberMobile=tnumberMobile,numberPhone=tnumberPhone)
+                             numberMobile=tnumberMobile,numberPhone=tnumberPhone)
             usser.password = make_password(tpassword)
             usser.save()
             groupUser = Role.objects.get(name=rol)
@@ -116,22 +114,15 @@ class UserDRPAManager(UserManager):
         
 
 class UserDRPA(AbstractUser):
-    MANUAL = 'manual'
-    LDAP = 'ldap'
-    TYPE_ACCOUNT_CHOICES = [
-        (MANUAL,'Cuenta manual'),
-        (LDAP,'Cuenta ldap')
-    ]
     
     numberPhoneValidator = RegexValidator(r"^\d+$", 'Los campos de números de teléfono y móvil admite solamente dígitos')
-   
     numberPhone = models.CharField('Número de teléfono',max_length=11,validators=[numberPhoneValidator],blank=True,default='')
     numberMobile = models.CharField('Número del móvil',max_length=11,validators=[numberPhoneValidator],blank=True,default='')
-    typeAccount = models.CharField('Tipo de cuenta',max_length=6,choices=TYPE_ACCOUNT_CHOICES,default=MANUAL)
-    logo= models.ImageField("Logotipo",upload_to=renameFile,null=False, default="avatar/photo-profile-default.png")
+    avatar= models.ImageField("Avatar",upload_to=renameFile,null=False,blank=False, default="avatar/photo-profile-default.png")
     directorySave = 'avatar'
     
     objects = UserDRPAManager()
+    
     
     def nameCompleted(self):
         return self.first_name+" "+self.last_name
@@ -153,11 +144,8 @@ class Role(Group):
     ADMIN       = 'admin'
     MANAGER_CONTENT = 'gestorContenido'
     INVITED     = 'invitado'
-    WORKER_UM   = 'trabajadorUM'
-    WORKER_DRPA = 'trabajadorDRPA'
-    STUDENT_UM  = 'estudianteUM'
     
-    ROLES_SYSTEM = [ADMIN,MANAGER_CONTENT,WORKER_DRPA,WORKER_UM,STUDENT_UM,INVITED]
+    ROLES_SYSTEM = [ADMIN,MANAGER_CONTENT,INVITED]
     class Meta:
         verbose_name ='Rol'
         verbose_name_plural = 'Roles'

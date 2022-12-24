@@ -1,50 +1,36 @@
 from django import forms
-from touristresource.models import TouristResource, TouristResourceImage
+from django.core.exceptions import ValidationError
+from touristresource.models import TourismType
+from core import util
 
-class TouristResourceAddForm(forms.ModelForm):
+class TourismTypeForm(forms.ModelForm):
     
-    hasImages = forms.BooleanField(required=False,initial=False,label='Tiene imagen ?')
-    
-    def __init__(self, *args, **kwargs):
-        super(TouristResourceAddForm, self).__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs['class'] ='form-control'
-        self.fields['description'].widget.attrs['class'] ='form-control'
-        self.fields['description'].widget.attrs['rows'] = 6
-        self.fields['description'].widget.attrs['style'] = 'resize: none;'
-        self.fields['hasImages'].widget.attrs['class'] = 'form-check-input'
-        self.fields['hasImages'].widget.attrs['onchange'] = 'hasImageChange(this)'
+    def __init__(self,*arg,**kwargs):
+        super(TourismTypeForm,self).__init__(*arg,**kwargs)
         
     
     class Meta:
-        model = TouristResource
-        fields = ['name','description']
-        exclude = []
+        model = TourismType
+        fields = ['type', 'description']
+        exclude = ['idTP','slug']
+        
+    def clean_type_es(self):
+        val = self.cleaned_data['type_es']
+        slugNew = util.generateSLUG(val)
+        exist = False
+        if self.instance != None:
+            exist = TourismType.objects.existThisSLUG(slugNew,self.instance.pk)
+        else:
+            exist = TourismType.objects.existThisSLUG(slugNew)
+            
+            
+        if exist == True:
+            raise  forms.ValidationError("El tipo de turismo es similar a uno ya existente")
+        return val
+    
+    
+    
+    
+        
 
-class TouristResourceUpdateForm(TouristResourceAddForm):
-    
-    def __init__(self, *args, **kwargs):
-        super(TouristResourceUpdateForm, self).__init__(*args, **kwargs)
-    
-
-class TouristResourceImageAddForm(forms.ModelForm):
-    
-    def __init__(self, *args, **kwargs):
-        super(TouristResourceImageAddForm, self).__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs['class'] ='form-control'
-        self.fields['description'].widget.attrs['class'] ='form-control'
-        self.fields['description'].widget.attrs['rows'] = 6
-        self.fields['description'].widget.attrs['style'] = 'resize: none;'
-    
-    
-    class Meta:
-        model = TouristResourceImage
-        fields = ['name','description','image']
-        exclude = ['idTouristResource']
-
-class TouristResourceImageUpdateForm(forms.ModelForm):
-    
-    
-    def __init__(self, *args, **kwargs):
-        super(TouristResourceImageUpdateForm, self).__init__(*args, **kwargs)
-    
-
+        

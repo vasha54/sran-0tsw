@@ -1,5 +1,17 @@
 from django.forms import BaseFormSet
+from urllib.parse import urlparse
+from django.conf import settings as djangosettings
+from django.urls.base import resolve, reverse
+from django.urls.exceptions import Resolver404
+from django.utils import translation
+from django.http import HttpResponseRedirect, HttpResponse
+from core import settings
+
+
+from unidecode import unidecode
 import qrcode
+import re
+
 
 def limitPagesShow(_min,_current,_max):
     limits=[]
@@ -54,10 +66,59 @@ def generateQRTouristResource(_request,_resource):
     imagen.save('medias/qr_resources/'+strUIID+'.svg')
     
 
+def generateSLUG(_name):
+    slug = str(_name)
+    slug = unidecode(slug) #Convertir texto Unicode en ASCII para quitar tildes y eñes
+    slug = re.sub(r'[^\w\s]', '', slug) #Elimino todos los caracteres no alfanumericos
+    slug = slug.lower() #Convetir a minusculas  
+    slug = re.sub(r"\s+", '-',slug) #Sustituir un espacio o una secuencias de espacio por un guion
+    return  slug
+
 class RequeridFormSet(BaseFormSet):
     def __init__(self,*args,**kwargs):
         super(RequeridFormSet,self).__init__(*args,**kwargs)
         for form in self.forms:
             form.empty_permitted = False
+            
+
+
+
+def set_language(request,*args,**kwargs):
+    host = request.META['HTTP_HOST']
+    referer = request.META['HTTP_REFERER']
+    url = referer.split(host)[1]
+    
+    
+    if request.method == 'POST':
+        language = 'es'
+        next_url = '/admin/'
+        if 'language' in request.POST.keys():
+            language = request.POST['language']
+        
+        if 'next' in request.POST.keys():
+            next_url = request.POST['next'] 
+        
+        
+        for lang, _ in settings.LANGUAGES:
+            translation.activate(lang)
+            try:
+                view = resolve(urlparse(request.META.get('HTTP_REFERER')).path)
+            except Resolver404:
+                view = None
+                
+            if view:
+                break
+        
+        if view:
+            translation.activate(language)
+            #next_url= reverse(view.url_name,args=view.args,kwargs=view.kwargs)
+            response = HttpResponseRedirect(next_url)
+            response.set_cookie(djangosettings.LANGUAGE_COOKIE_NAME,language)
+        else:
+            response = HttpResponseRedirect(next_url)
+        return response
+    else:
+        return HttpResponseRedirect(url)
+           
 
 
