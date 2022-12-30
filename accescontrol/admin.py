@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.db.models import Value
+from django.db.models import Value, Count
 from django.db.models.functions import Concat
 from django.contrib.auth.admin import UserAdmin,GroupAdmin
 from django.utils.html import format_html
@@ -7,6 +7,24 @@ from accescontrol.models import UserDRPA,Role
 from accescontrol.forms import AddUserAccesControlForm, UpdateUserAccesControlForm
 from core.settings import ITEM_PER_PAGE
 # Register your models here.
+
+class RoleAdmin(GroupAdmin):
+    list_display = ['name','countUsers']
+    list_per_page = ITEM_PER_PAGE
+    search_fields = ['name__contains']
+    
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.annotate(
+            _countUsers=Count('user')
+        )
+
+        return queryset
+    
+    def countUsers(self, _obj):
+        return _obj._countUsers
+    countUsers.short_description= 'Cantidad de usuarios'
+    countUsers.admin_order_field = "_countUsers"
 
 class UserDRPAAdmin(UserAdmin):
     list_display  = ('photo','nameCompleted','email','active','numberPhone','numberMobile')
@@ -53,4 +71,4 @@ class UserDRPAAdmin(UserAdmin):
     photo.short_description = ""
 
 admin.site.register(UserDRPA,UserDRPAAdmin)
-admin.site.register(Role,GroupAdmin)
+admin.site.register(Role,RoleAdmin)

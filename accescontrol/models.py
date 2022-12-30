@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.hashers import check_password, make_password
-from django.contrib.auth.models import AbstractUser, Group, UserManager
+from django.contrib.auth.models import AbstractUser, Group, UserManager, GroupManager
 from django.core.validators import RegexValidator
 from django.db.models import Q, Value
 from django.db.models.functions import Concat
@@ -111,7 +111,11 @@ class UserDRPAManager(UserManager):
                     groupUser.user_set.add(user)
         except UserDRPA.DoesNotExist:
             pass
-        
+
+class RoleManager(GroupManager):
+    
+    def countUserThisRole(self,_rol):
+        return UserDRPA.objects.filter(groups__name=_rol).count()
 
 class UserDRPA(AbstractUser):
     
@@ -146,6 +150,12 @@ class Role(Group):
     INVITED     = 'invitado'
     
     ROLES_SYSTEM = [ADMIN,MANAGER_CONTENT,INVITED]
+
+    objects = RoleManager()
+    
+    def countUsers(self):
+        return UserDRPA.objects.filter(groups__name=self.name).count()
+    
     class Meta:
         verbose_name ='Rol'
         verbose_name_plural = 'Roles'

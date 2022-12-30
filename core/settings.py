@@ -244,10 +244,10 @@ JAZZMIN_SETTINGS = {
     "navigation_expanded": False,
 
     # Hide these apps when generating side menu e.g (auth)
-    "hide_apps": [],
+    "hide_apps": ['auth'],
 
     # Hide these models when generating side menu (e.g auth.user)
-    "hide_models": [],
+    "hide_models": ['auth.group'],
 
     # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
     "order_with_respect_to": ["auth", "books", "books.author", "books.book"],
@@ -268,7 +268,8 @@ JAZZMIN_SETTINGS = {
         "auth": "fas fa-users-cog",
         "auth.user": "fas fa-user",
         "auth.Group": "fas fa-users",
-        'accescontrol.userdrpa': 'fas fa-user-alt',
+        'accescontrol': 'fas fa-users-cog',
+        'accescontrol.userdrpa': 'fas fa-users',
         'accescontrol.role':'fas fa-id-card',
     },
     # Icons that are used when one is not manually specified
