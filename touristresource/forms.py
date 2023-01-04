@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from touristresource.models import TourismType, ValueTouristic, TypeService
+from touristresource.models import TourismType, ValueTouristic, TypeService, ScheduleService
 from core import util
 
 class TourismTypeForm(forms.ModelForm):
@@ -38,7 +38,7 @@ class ValueTouristicForm(forms.ModelForm):
         fields = ['value', 'description']
         exclude = ['idVT','slug']
         
-    def clean_type_es(self):
+    def clean_value_es(self):
         val = self.cleaned_data['value_es']
         slugNew = util.generateSLUG(val)
         exist = False
@@ -76,6 +76,32 @@ class TypeServiceForm(forms.ModelForm):
         if exist == True:
             raise  forms.ValidationError("El tipo de servicio es similar a uno ya existente")
         return val
+    
+class ScheduleServiceForm(forms.ModelForm):
+    
+    
+    def __init__(self, *args, **kwargs):
+        super(ScheduleServiceForm, self).__init__(*args, **kwargs)
+        
+    class Meta:
+        model = ScheduleService
+        fields = ['name', 'startTime', 'endTime']
+        exclude = ['idScheduleClass','slug']
+        
+    def clean_name_es(self):
+        val = self.cleaned_data['name_es']
+        slugNew = util.generateSLUG(val)
+        exist = False
+        if self.instance != None:
+            exist = ScheduleService.objects.existThisSLUG(slugNew,self.instance.pk)
+        else:
+            exist = ScheduleService.objects.existThisSLUG(slugNew)
+            
+            
+        if exist == True:
+            raise  forms.ValidationError("El horario del servicio es similar a uno ya existente")
+        return val
+    
     
     
     

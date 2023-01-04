@@ -247,7 +247,7 @@ JAZZMIN_SETTINGS = {
     "hide_apps": ['auth'],
 
     # Hide these models when generating side menu (e.g auth.user)
-    "hide_models": ['auth.group'],
+    "hide_models": ['auth.group','touristresource.touristresourcevideo'],
 
     # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
     "order_with_respect_to": ["auth", "books", "books.author", "books.book"],
@@ -271,6 +271,17 @@ JAZZMIN_SETTINGS = {
         'accescontrol': 'fas fa-users-cog',
         'accescontrol.userdrpa': 'fas fa-users',
         'accescontrol.role':'fas fa-id-card',
+        'touristresource':'fas fa-landmark',
+        'touristresource.scheduleservice':'fas fa-clock',
+        'touristresource.typeservice':'fas fa-hand-holding',
+        'touristresource.tourismtype':'fas fa-mountain',
+        'touristresource.valuetouristic':'fas fa-gem',
+        'touristresource.touristresourceimage':'fas fa-images',
+        'touristresource.touristresourcevideo':'fas fa-video',
+        'touristresource.resourcetourist':'fas fa-landmark',
+        'touristresource.service':'fas fa-store',
+        'touristresource.valueresourcetourist':'fas fa-icons',
+        'touristresource.tourismtyperesourcetourist':'fas fa-suitcase-rolling',
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
