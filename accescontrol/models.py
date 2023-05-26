@@ -16,60 +16,6 @@ def renameFile(instance,filename):
 # Create your models here.
 class UserDRPAManager(UserManager):
     
-    def registerPersonUM(self,_person):
-        if 'aunteticate' in _person.keys() and _person['aunteticate']==True:
-            tusername = ''
-            tfirst_name = ' '
-            tlast_name = ' '
-            temail = ' '
-            tis_staff = 0
-            tis_active = 1
-            tnumberPhone =''
-            tnumberMobile =''
-            tpassword = ''
-            rol =Role.INVITED
-            
-            if 'username' in _person.keys():
-                tusername=_person['username']
-            if 'password' in _person.keys():
-                tpassword=_person['password']
-            if 'givenName' in _person.keys():
-                tfirst_name = tfirst_name.join(_person['givenName']) 
-            if 'sn' in _person.keys():
-                tlast_name = tlast_name.join(_person['sn'])   
-            if 'mail' in _person.keys():
-                temail = temail.join(_person['mail'])
-            if 'rol' in _person.keys():
-                rol = _person['rol']
-                
-            usser = UserDRPA(username=tusername,is_staff=tis_staff,
-                             is_active=tis_active,first_name=tfirst_name,last_name=tlast_name,email=temail,
-                             numberMobile=tnumberMobile,numberPhone=tnumberPhone)
-            usser.password = make_password(tpassword)
-            usser.save()
-            groupUser = Role.objects.get(name=rol)
-            if groupUser !=None: 
-                groupUser.user_set.add(usser)
-            
-    def existUsserWithAccountManual(self,_user,_password):
-        exist = False
-        if self.existUsserWithAccount(_user,_password) == True:
-            usserOBJ = self.get(username=_user)
-            if usserOBJ!=None and usserOBJ.typeAccount == UserDRPA.MANUAL:
-                exist = True
-            
-        return exist
-    
-    def existUsserWithAccount(self, _user, _password):
-        exist = False
-        try:
-            matchcheck= self.get(username=_user)
-            if matchcheck != None:
-                exist = True
-        except UserDRPA.DoesNotExist:
-            exist = False
-        return exist
-    
     def searchPattern(self,_patterSearch=None):
         _patterSearch = str(_patterSearch).strip()
         
@@ -146,8 +92,8 @@ class UserDRPA(AbstractUser):
     
 class Role(Group):
     ADMIN       = 'admin'
-    MANAGER_CONTENT = 'gestorContenido'
-    INVITED     = 'invitado'
+    MANAGER_CONTENT = 'manager_content'
+    INVITED     = 'invited'
     
     ROLES_SYSTEM = [ADMIN,MANAGER_CONTENT,INVITED]
 

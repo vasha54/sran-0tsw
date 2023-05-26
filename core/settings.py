@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'location_field.apps.DefaultConfig',
      
     'rest_framework',
     'accescontrol',
+    'country',
     'touristresource',
 ]
 
@@ -151,9 +153,12 @@ NAME_APP_SHORT = 'SGPRTRAN-0'
 
 ITEM_PER_PAGE = 5
 
+#ISO 639-1
 LANGUAGES = (
-    ("es","Espanol"),
+    ("es","Español"),
     ("en","English"),
+    ("ru","Ruso"),
+    ("fr","Frances"),
 )
 
 LOCALE_PATHS = [
@@ -163,7 +168,7 @@ LOCALE_PATHS = [
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'es'
 
 
-MODELTRANSLATION_LANGUAGES = ('es','en')
+MODELTRANSLATION_LANGUAGES = ('es','en','ru','fr')
 
 JAZZMIN_SETTINGS = {
      # title of the window (Will default to current_admin_site.site_title if absent or None)
@@ -268,11 +273,17 @@ JAZZMIN_SETTINGS = {
         "auth": "fas fa-users-cog",
         "auth.user": "fas fa-user",
         "auth.Group": "fas fa-users",
+        
+        
+        
         'accescontrol': 'fas fa-users-cog',
         'accescontrol.userdrpa': 'fas fa-users',
         'accescontrol.role':'fas fa-id-card',
+        
+        
+        
         'touristresource':'fas fa-landmark',
-        'touristresource.scheduleservice':'fas fa-clock',
+        'touristresource.schedule':'fas fa-clock',
         'touristresource.typeservice':'fas fa-hand-holding',
         'touristresource.tourismtype':'fas fa-mountain',
         'touristresource.valuetouristic':'fas fa-gem',
@@ -328,4 +339,4 @@ JAZZMIN_UI_TWEAKS = {
     "dark_mode_theme": "darkly",
 }
 
-ITEM_PER_PAGE = 5
+

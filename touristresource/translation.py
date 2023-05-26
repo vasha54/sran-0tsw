@@ -1,28 +1,38 @@
-from touristresource.models import TourismType, ValueTouristic, TypeService, ScheduleService, ResourceTourist, TouristResourceImage
+from touristresource.models import TourismType, TypeService, Schedule, InfrastructureAccess#, ValueTouristic, ScheduleService, ResourceTourist, TouristResourceImage
 from modeltranslation.translator import TranslationOptions,register
 
 @register(TourismType)
 class TourismTypeTranslationOptions(TranslationOptions):
-    fields = ['type','description']
-    
-@register(ValueTouristic)
-class ValueTouristicTranslationOptions(TranslationOptions):
-    fields = ['value','description']
+    fields = ['name','description']
     
 @register(TypeService)
 class TypeServiceTranslationOptions(TranslationOptions):
-    fields = ['type','description']
+    fields = ['name','description']
     
-@register(ScheduleService)
-class ScheduleServiceTranslationOptions(TranslationOptions):
+@register(Schedule)
+class ScheduleTranslationOptions(TranslationOptions):
     fields = ['name']
     
-@register(ResourceTourist)
-class ResourceTouristTranslationOptions(TranslationOptions):
-    fields = ['name','description','history']
+@register(InfrastructureAccess)
+class InfrastructureAccessTranslationOptions(TranslationOptions):
+    fields = ['name']
     
-@register(TouristResourceImage)
-class ResourTouristResourceImageTranslationOptions(TranslationOptions):
-    fields = ['name','description']
+# @register(ValueTouristic)
+# class ValueTouristicTranslationOptions(TranslationOptions):
+#     fields = ['value','description']
+    
+
+    
+# @register(ScheduleService)
+# class ScheduleServiceTranslationOptions(TranslationOptions):
+#     fields = ['name']
+    
+# @register(ResourceTourist)
+# class ResourceTouristTranslationOptions(TranslationOptions):
+#     fields = ['name','description','history']
+    
+# @register(TouristResourceImage)
+# class ResourTouristResourceImageTranslationOptions(TranslationOptions):
+#     fields = ['name','description']
     
     

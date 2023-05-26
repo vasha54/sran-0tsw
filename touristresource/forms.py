@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from touristresource.models import TourismType, ValueTouristic, TypeService, ScheduleService
+from touristresource.models import TourismType, TypeService, Schedule, InfrastructureAccess #, ValueTouristic, ScheduleService
 from core import util
 
 class TourismTypeForm(forms.ModelForm):
@@ -10,11 +10,11 @@ class TourismTypeForm(forms.ModelForm):
         
     class Meta:
         model = TourismType
-        fields = ['type', 'description']
+        fields = ['name', 'description']
         exclude = ['idTP','slug']
         
-    def clean_type_es(self):
-        val = self.cleaned_data['type_es']
+    def clean_name_es(self):
+        val = self.cleaned_data['name_es']
         slugNew = util.generateSLUG(val)
         exist = False
         if self.instance != None:
@@ -26,33 +26,7 @@ class TourismTypeForm(forms.ModelForm):
         if exist == True:
             raise  forms.ValidationError("El tipo de turismo es similar a uno ya existente")
         return val
-    
-class ValueTouristicForm(forms.ModelForm):
-    
-    def __init__(self,*arg,**kwargs):
-        super(ValueTouristicForm,self).__init__(*arg,**kwargs)
-        
-    
-    class Meta:
-        model = ValueTouristic
-        fields = ['value', 'description']
-        exclude = ['idVT','slug']
-        
-    def clean_value_es(self):
-        val = self.cleaned_data['value_es']
-        slugNew = util.generateSLUG(val)
-        exist = False
-        if self.instance != None:
-            exist = ValueTouristic.objects.existThisSLUG(slugNew,self.instance.pk)
-        else:
-            exist = ValueTouristic.objects.existThisSLUG(slugNew)
-            
-            
-        if exist == True:
-            raise  forms.ValidationError("El valor turístico es similar a uno ya existente")
-        return val
-    
-    
+
 class TypeServiceForm(forms.ModelForm):
     
     def __init__(self,*arg,**kwargs):
@@ -60,11 +34,11 @@ class TypeServiceForm(forms.ModelForm):
         
     class Meta:
         model = TypeService
-        fields = ['type', 'description']
+        fields = ['name', 'description']
         exclude = ['idTS','slug']
         
-    def clean_type_es(self):
-        val = self.cleaned_data['type_es']
+    def clean_name_es(self):
+        val = self.cleaned_data['name_es']
         slugNew = util.generateSLUG(val)
         exist = False
         if self.instance != None:
@@ -77,30 +51,84 @@ class TypeServiceForm(forms.ModelForm):
             raise  forms.ValidationError("El tipo de servicio es similar a uno ya existente")
         return val
     
-class ScheduleServiceForm(forms.ModelForm):
-    
+class ScheduleForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
-        super(ScheduleServiceForm, self).__init__(*args, **kwargs)
+        super(ScheduleForm, self).__init__(*args, **kwargs)
         
     class Meta:
-        model = ScheduleService
+        model = Schedule
         fields = ['name', 'startTime', 'endTime']
-        exclude = ['idScheduleClass','slug']
+        exclude = ['idSchedule','slug']
         
     def clean_name_es(self):
         val = self.cleaned_data['name_es']
         slugNew = util.generateSLUG(val)
         exist = False
         if self.instance != None:
-            exist = ScheduleService.objects.existThisSLUG(slugNew,self.instance.pk)
+            exist = Schedule.objects.existThisSLUG(slugNew,self.instance.pk)
         else:
-            exist = ScheduleService.objects.existThisSLUG(slugNew)
+            exist = Schedule.objects.existThisSLUG(slugNew)
             
             
         if exist == True:
-            raise  forms.ValidationError("El horario del servicio es similar a uno ya existente")
+            raise  forms.ValidationError("El nombre del horario es similar a uno ya existente")
         return val
+
+class InfrastructureAccessForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super(InfrastructureAccessForm, self).__init__(*args, **kwargs)
+        
+    class Meta:
+        model = InfrastructureAccess
+        fields = ['name']
+        exclude = ['idIA','slug']
+        
+    def clean_name_es(self):
+        val = self.cleaned_data['name_es']
+        slugNew = util.generateSLUG(val)
+        exist = False
+        if self.instance != None:
+            exist = InfrastructureAccess.objects.existThisSLUG(slugNew,self.instance.pk)
+        else:
+            exist = InfrastructureAccess.objects.existThisSLUG(slugNew)
+            
+            
+        if exist == True:
+            raise  forms.ValidationError("El nombre de la infraestructura de acceso es similar a uno ya existente")
+        return val
+    
+
+# class ValueTouristicForm(forms.ModelForm):
+    
+#     def __init__(self,*arg,**kwargs):
+#         super(ValueTouristicForm,self).__init__(*arg,**kwargs)
+        
+    
+#     class Meta:
+#         model = ValueTouristic
+#         fields = ['value', 'description']
+#         exclude = ['idVT','slug']
+        
+#     def clean_value_es(self):
+#         val = self.cleaned_data['value_es']
+#         slugNew = util.generateSLUG(val)
+#         exist = False
+#         if self.instance != None:
+#             exist = ValueTouristic.objects.existThisSLUG(slugNew,self.instance.pk)
+#         else:
+#             exist = ValueTouristic.objects.existThisSLUG(slugNew)
+            
+            
+#         if exist == True:
+#             raise  forms.ValidationError("El valor turístico es similar a uno ya existente")
+#         return val
+    
+    
+
+    
+
     
     
     
