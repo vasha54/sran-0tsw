@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-02 22:22-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: core/settings.py:167
+msgid "Español"
+msgstr ""
+
+#: core/settings.py:168
+msgid "English"
+msgstr ""
+
+#: core/settings.py:169
+msgid "Ruso"
+msgstr ""
+
+#: core/settings.py:170
+msgid "Frances"
+msgstr ""
+
+#: template/admin/details/resource_tourist_details.html:10
+#: template/admin/details/resource_tourist_qrs.html:10
+msgid "Home"
+msgstr ""
+
+#: template/base.html:11
+msgid "title-page"
+msgstr ""
+
+#: template/base.html:70
+msgid "spanish"
+msgstr "Spanish"
+
+#: template/base.html:78
+msgid "english"
+msgstr "English"
+
+#: template/base.html:87
+msgid "russian"
+msgstr "Russian"
+
+#: template/base.html:96
+msgid "frances"
+msgstr "Frances"
+
+#: template/base.html:141
+msgid "name_resource_tourist"
+msgstr ""
+
+#: template/base.html:163
+msgid "location_resource_tourist"
+msgstr ""
+
+#: template/base.html:188
+msgid "description_resource_tourist"
+msgstr ""
+
+#: template/base.html:213
+msgid "comments_resource_tourist"
+msgstr ""
+
+#: template/base.html:284
+msgid "gallery_picture_resource_tourist"
+msgstr ""
+
+#: template/base.html:347
+msgid "maps_location"
+msgstr ""
+
+#: template/base.html:425
+msgid "service_resource_tourist"
+msgstr ""
+
+#: template/base.html:488
+msgid "suggestion_resource_tourist"
+msgstr ""
