@@ -1,0 +1,40 @@
+{% extends 'admin/base.html' %}
+{% load i18n admin_urls %}
+
+{% block breadcrumbs %}
+<div class="ontainer-fluid">
+    <div class="row">
+        <div class="col-12 col-md-auto d-flex flex-grow-1 align-items-center">
+            <h1 class="h4 m-0 pr-3 mr-3 border-right"> Recursos turísticos </h1>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></li>
+                <li class="breadcrumb-item"><a href="/admin/touristresource/">Módulo de Recursos Turísticos
+</a></li>
+                <li class="breadcrumb-item"><a href="/admin/touristresource/resourcetourist/">Recursos Turísticos</a></li>
+                <li class="breadcrumb-item active">Detalles del recurso turístico</li>
+            </ol>
+        </div>
+        <div class="col-12 col-md-auto d-flex align-items-center justify-content-end page-actions">
+        </div>
+    </div>
+</div>
+            
+{% endblock %}
+{% block content %} 
+
+<div class="content col-12">
+    <div class="container-fluid">
+        <section id="content" class="content">
+            <div class="row">
+                <div class="card col-12">
+                    <div class="card-body">
+            
+                    </div>
+                </div>
+            </div>
+            <br class="clear">
+        </section>
+    </div>
+</div>
+
+{% endblock %}

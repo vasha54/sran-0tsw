@@ -1,0 +1,88 @@
+<html>
+        <head>
+            <title> {% block titleReport %}{% endblock %} </title>
+            <style>
+                @page {
+                    size: a4 ;
+                    font-size: 11px;
+                    @frame header_frame {
+                        /* Static Frame */
+                        -pdf-frame-content: header_content;
+                        left: 20pt; width: 555pt; top: 20pt; height: 40pt;
+                    }
+                    @frame content_frame {
+                        /* Content Frame */
+                        left: 20pt; width: 555pt; top: 50pt; height: 690pt; bottom: 60pt;
+                    }
+                    @frame footer_frame {
+                        /* Another static Frame */
+                        -pdf-frame-content: footer_content;
+                        left: 20pt; width: 555pt; top: 820pt; height: 40pt;
+                    
+                    }
+                }
+                
+                .header{
+                    font-size: 11px;
+                    font-weight: bold;
+                    border-bottom: solid #000000; 
+                    width: 100%;
+                }
+                
+                .footer{
+                    padding-top: 10px;
+                    font-size: 11px;
+                    font-weight: bold;
+                    border-top: solid #000000; 
+                }
+
+                .content{
+                    font-size: 11px !important; 
+                }
+                
+                table ,th, td {
+                    border: 1px solid black;
+                    text-align:center;
+                    padding: 1px 1px;
+                    font-size :11px;
+                    font-family: Arial;
+                    margin: 0px 0;
+                }
+
+                .w3-align-left{
+                    text-align: left !important;
+                }
+                
+                .w3-text-red{
+                  color:#FF0000;
+                }
+                
+                .table-without-border{
+                     border:0px solid white;
+                }
+
+                .labelPage{
+                    float: left;
+                    position: relative;
+                   
+                }
+                
+            </style>
+        </head>
+        <body>
+        <!-- Content for Static Frame 'header_frame' -->
+        <div class="header" id="header_content">   {% block header %}   {% endblock %} </div>
+        
+        <!-- HTML Content -->
+        <div class="content" id="content_content">
+        {% block content %}{% endblock %}
+        </div>
+        
+        <!-- Content for Static Frame 'footer_frame' -->
+        <div class="footer" id="footer_content">
+           Página <pdf:pagenumber> de <pdf:pagecount>. Informe generado por el sistema {{ nameApp }}
+        </div>
+        
+        </body>
+    </html>
+

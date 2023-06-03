@@ -1,0 +1,55 @@
+{% extends "base_report_landscape.html" %}
+
+{% block css %} 
+    <style>
+       
+        .headerTable{
+            border-width: 0px;   
+        }
+
+        .headerTable tr{
+            border-width: 0px;   
+        }
+
+        .headerTable tr td{
+            border-width: 0px;   
+        }
+    </style>
+{% endblock %}
+
+{% block titleReport %}
+
+Impresión de los QRs del recurso túristico {{resource.name}}
+
+{% endblock %}
+
+{% block header %} 
+
+
+{% endblock %} 
+
+{% block content %}
+
+
+<table class="headerTable">
+    <tr>
+        <td style="width: 100%;"><img src="{{urlQRWeb}}" alt="" style="width :100%"></td>
+    </tr>
+</table>
+
+<pdf:nextpage /> 
+
+<table class="headerTable">
+    <tr>
+        <td style="width: 100%;"><img src="{{urlQRApp}}" alt="" style="width :100%"></td>
+    </tr>
+</table>
+
+
+
+
+ 
+
+
+
+{% endblock %}
