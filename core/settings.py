@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 import os
 
@@ -42,8 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'location_field.apps.DefaultConfig',
-     
+    'mapwidgets', 
     'rest_framework',
     'accescontrol',
     'country',
@@ -59,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -66,7 +69,12 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'template'),
+                 os.path.join(BASE_DIR,'template/admin'),
+                 os.path.join(BASE_DIR,'template/admin/details'),
+                 os.path.join(BASE_DIR,'template/admin/print_report'),
+                 os.path.join(BASE_DIR,'template/details'),
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -115,11 +123,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'es'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
+
 USE_L10N = True
 
 USE_TZ = True
@@ -132,7 +141,7 @@ DECIMAL_SEPARATOR = ','
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
+#STATIC_ROOT ='static'
 MEDIA_ROOT=os.path.join(BASE_DIR,'medias')
 MEDIA_URL='/medias/'
 
@@ -155,15 +164,17 @@ ITEM_PER_PAGE = 5
 
 #ISO 639-1
 LANGUAGES = (
-    ("es","Español"),
-    ("en","English"),
-    ("ru","Ruso"),
-    ("fr","Frances"),
+    ("es",_("Español")),
+    ("en",_("English")),
+    ("ru",_("Ruso")),
+    ("fr",_("Frances")),
 )
 
 LOCALE_PATHS = [
     BASE_DIR / 'locale/',
 ]
+
+
 
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'es'
 
@@ -308,7 +319,7 @@ JAZZMIN_SETTINGS = {
     # UI Tweaks #
     #############
     # Relative paths to custom CSS/JS scripts (must be present in static files)
-    "custom_css": None,
+    "custom_css": '/css/style_app.css',
     "custom_js": None,
     # Whether to link font from fonts.googleapis.com (use custom_css to supply font otherwise)
     "use_google_fonts_cdn": True,
@@ -328,7 +339,7 @@ JAZZMIN_SETTINGS = {
     # override change forms on a per modeladmin basis
     "changeform_format_overrides": {"auth.user": "collapsible", "auth.group": "vertical_tabs"},
     # Add a language dropdown into the admin
-    "language_chooser": True,
+    "language_chooser": False,
     
     
 }
@@ -338,5 +349,36 @@ JAZZMIN_UI_TWEAKS = {
     "theme": "litera",
     "dark_mode_theme": "darkly",
 }
+
+LOCATION_FIELD_PATH = "location_field"
+
+LOCATION_FIELD = {
+    "map.provider": "google",
+    "map.zoom": 13,
+    "search.provider": "google",
+    "search.suffix": "",
+    # Google
+    "provider.google.api": "//maps.google.com/maps/api/js",
+    "provider.google.api_key": "",
+    "provider.google.map_type": "ROADMAP",
+    # Mapbox
+    "provider.mapbox.access_token": "",
+    "provider.mapbox.max_zoom": 18,
+    "provider.mapbox.id": "mapbox.streets",
+    # OpenStreetMap
+    "provider.openstreetmap.max_zoom": 18,
+    # misc
+    "resources.root_path": LOCATION_FIELD_PATH,
+    "resources.media": {
+        "js": [
+            LOCATION_FIELD_PATH + "/js/form.js",
+        ],
+    },
+}
+
+# LOCATION_FIELD = {
+#     'map.provider': 'openstreetmap',
+#     'search.provider': 'nominatim',
+# }
 
 

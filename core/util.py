@@ -6,6 +6,7 @@ from django.urls.exceptions import Resolver404
 from django.utils import translation
 from django.http import HttpResponseRedirect, HttpResponse
 from core import settings
+from PIL import Image, ImageDraw, ImageFont #Save and display the image
 
 
 from unidecode import unidecode
@@ -43,27 +44,62 @@ def canRemoveUserDRPA(_user):
     #TODO Falta definir bajo que criterios vamos a eliminar los usuarios
     return canRemove
 
-def generateQRTouristResource(_request,_resource):
-    qr = qrcode.QRCode(
-    version = 1,
-    error_correction = qrcode.constants.ERROR_CORRECT_H,
-    box_size = 10,
-    border = 4)
+def generateQRTouristResource(_request,_resource,_web=True):
+    fontFile = 'static/fonts/HelveticaBold.ttf'
+    fontName = 'HelveticaBold.ttf'
+    imageExt = '.png'
+    
+    captionText = 'From '
+    
+    if _web==True:
+        captionText += 'Web'
+    else:
+        captionText += 'App'
+    
+    
+    # Create qr code instance
+    qr = qrcode.QRCode()
+    
     domainWeb = _request.META['HTTP_HOST']
     protocol = 'http://'
-    suffix ='/api/v1/touristresource/post/'
-    strUIID = str(_resource.id)
-    url = protocol+domainWeb+suffix+strUIID
-    info = url
-    print(url)
-    # Agregamos la informacion
-    qr.add_data(info)
-    qr.make(fit=True)
-    # Creamos una imagen para el objeto código QR
-    imagen = qr.make_image()
-    #Guardemos la imagen con la extension que queramos
+    data=protocol+domainWeb
+    strUIID = str(_resource.pk)
+    if _web == False:
+        data=data+'/api/v1'
+    data=data+'/resource_tourist/'+strUIID
     
-    imagen.save('medias/qr_resources/'+strUIID+'.svg')
+    print(data)
+    
+    # Add data
+    qr.box_size = int(64)
+    qr.add_data(data)
+    qr.make(fit=True)
+
+    # Create an image from the QR Code instance
+    imgQR = qr.make_image()
+    
+    draw = ImageDraw.Draw(imgQR)
+    QRwidth, QRheight = imgQR.size
+    fontSize = 1 #starting font size
+    img_fraction = 0.90 # portion of image width you want text width to be, I've had good luck with .90
+    fontHeightMax = qr.border * qr.box_size - 10
+    captionX = 0
+    captionY = 0
+    print('Font height max is set to: ' + str(fontHeightMax))
+    font = ImageFont.truetype(fontFile, fontSize)
+    while font.getsize(captionText)[0] < img_fraction*QRwidth and font.getsize(captionText)[1] < fontHeightMax:
+        fontSize += 1
+        font = ImageFont.truetype(fontFile, fontSize)
+    captionX = int(QRwidth - font.getsize(captionText)[0]) / 2 #Center the label
+    print('Offset: ' + str(captionX))
+    draw.text((captionX, captionY), captionText, font=font)
+    
+    if _web==True:
+        imgQR.save('medias/qr_resources/'+'web_'+strUIID+imageExt)
+    else:
+        imgQR.save('medias/qr_resources/'+'app_'+strUIID+imageExt)
+
+
     
 
 def generateSLUG(_name):
@@ -83,42 +119,61 @@ class RequeridFormSet(BaseFormSet):
 
 
 
-def set_language(request,*args,**kwargs):
+def set_language(request,idiom,*args,**kwargs):
     host = request.META['HTTP_HOST']
     referer = request.META['HTTP_REFERER']
     url = referer.split(host)[1]
     
+    language = idiom
     
-    if request.method == 'POST':
-        language = 'es'
-        next_url = '/admin/'
-        if 'language' in request.POST.keys():
-            language = request.POST['language']
-        
-        if 'next' in request.POST.keys():
-            next_url = request.POST['next'] 
-        
-        
-        for lang, _ in settings.LANGUAGES:
-            translation.activate(lang)
-            try:
-                view = resolve(urlparse(request.META.get('HTTP_REFERER')).path)
-            except Resolver404:
-                view = None
-                
-            if view:
-                break
+    for lang, _ in settings.LANGUAGES:
+        translation.activate(lang)
+        try:
+            view = resolve(urlparse(request.META.get('HTTP_REFERER')).path)
+        except Resolver404:
+            view = None
         
         if view:
-            translation.activate(language)
-            #next_url= reverse(view.url_name,args=view.args,kwargs=view.kwargs)
-            response = HttpResponseRedirect(next_url)
-            response.set_cookie(djangosettings.LANGUAGE_COOKIE_NAME,language)
-        else:
-            response = HttpResponseRedirect(next_url)
+            break
+        
+    if view:
+        translation.activate(language)
+        next_url= reverse(view.url_name,args=view.args,kwargs=view.kwargs)
+        response = HttpResponseRedirect(next_url)
+        response.set_cookie(djangosettings.LANGUAGE_COOKIE_NAME,language)
         return response
-    else:
-        return HttpResponseRedirect(url)
+    return HttpResponseRedirect(url)
+    
+    # if request.method == 'POST':
+    #     language = 'es'
+    #     next_url = '/admin/'
+    #     if 'language' in request.POST.keys():
+    #         language = request.POST['language']
+        
+    #     if 'next' in request.POST.keys():
+    #         next_url = request.POST['next'] 
+        
+        
+    #     for lang, _ in settings.LANGUAGES:
+    #         translation.activate(lang)
+    #         try:
+    #             view = resolve(urlparse(request.META.get('HTTP_REFERER')).path)
+    #         except Resolver404:
+    #             view = None
+                
+    #         if view:
+    #             break
+        
+    #     if view:
+    #         translation.activate(language)
+    #         next_url= reverse(view.url_name,args=view.args,kwargs=view.kwargs)
+    #         response = HttpResponseRedirect(next_url)
+    #         response.set_cookie(djangosettings.LANGUAGE_COOKIE_NAME,language)
+    #     else:
+    #         response = HttpResponseRedirect(next_url)
+    #     return response
+    # else:
+    #     return HttpResponseRedirect(url)
            
 
 

@@ -21,17 +21,20 @@ from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 
 from core.util import set_language
+from touristresource.views import ResourceTouristView
 import accescontrol.urls
+import apiv1.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accescontrol/',include(accescontrol.urls)),
-    
+    path('api/v1/',include(apiv1.urls)),
+    path('resource_tourist/<pk>',ResourceTouristView.as_view(),name='view_resource_tourist'),
 ]
 
 urlpatterns = [
     *i18n_patterns (*urlpatterns,prefix_default_language=False),
-     path('set_lenguage',set_language,name='set_language')
+     path('set_lenguage/<idiom>',set_language,name='set_language'),
      
 ]
 
