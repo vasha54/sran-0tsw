@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from country.models import Province, Municipality
+from country.models import Province, Municipality, Language
 from core import util
 
 class ProvinceForm(forms.ModelForm):
@@ -53,3 +53,27 @@ class MunicipalityForm(forms.ModelForm):
                 if exist == True:
                     raise  forms.ValidationError("Ya existe un municipio con similar nombre en la misma provincia.") 
         return cleaned_data
+    
+class LanguageForm(forms.ModelForm):
+    
+    def __init__(self,*arg,**kwargs):
+        super(LanguageForm,self).__init__(*arg,**kwargs)
+        
+    class Meta:
+        model  = Language
+        fields = ['name','ISO639v1','flag' ]
+        exclude = ['idLanguage','slug']
+        
+    def clean_name_es(self):
+        val = self.cleaned_data['name_es']
+        slugNew = util.generateSLUG(val)
+        exist = False
+        if self.instance != None:
+            exist = Language.objects.existThisSLUG(slugNew,self.instance.pk)
+        else:
+            exist = Language.objects.existThisSLUG(slugNew)
+            
+            
+        if exist == True:
+            raise  forms.ValidationError("El idioma es similar a uno ya existente")
+        return val

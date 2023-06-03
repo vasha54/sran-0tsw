@@ -1,5 +1,5 @@
 from modeltranslation.translator import TranslationOptions,register
-from country.models import Province, Municipality
+from country.models import Province, Municipality, Language
 
 @register(Province)
 class ProvinceTranslationOptions(TranslationOptions):
@@ -7,4 +7,8 @@ class ProvinceTranslationOptions(TranslationOptions):
     
 @register(Municipality)
 class MunicipalityTranslationOptions(TranslationOptions):
+    fields = ['name']
+    
+@register(Language)
+class LanguageTranslationOptions(TranslationOptions):
     fields = ['name']

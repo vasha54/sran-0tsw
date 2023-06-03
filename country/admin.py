@@ -3,8 +3,8 @@ from modeltranslation.admin import TranslationAdmin
 from core import util
 from core.settings import ITEM_PER_PAGE
 
-from country.models import Province,Municipality
-from country.forms import ProvinceForm, MunicipalityForm
+from country.models import Province,Municipality,Language
+from country.forms import ProvinceForm, MunicipalityForm,LanguageForm
 # Register your models here.
 
 class PronviceAdmin(TranslationAdmin):
@@ -50,5 +50,25 @@ class MunicipalityAdmin(TranslationAdmin):
             obj.slug = util.generateSLUG(obj.idProvince.slug+'_'+obj.name)
             super().save_model(request, obj, self.form, change)
             
+class LanguageAdmin(TranslationAdmin):
+    list_per_page = ITEM_PER_PAGE
+    list_display=['name','ISO639v1']
+    search_fields = ['name__contains']
+    
+    form = LanguageForm
+    model = Language
+    group_fieldsets = True
+    
+    class Media:
+        pass
+    
+    def save_model(self, request, obj, form, change):
+        
+        if form.is_valid()==True:
+            obj = form.save(commit=False)
+            obj.slug = util.generateSLUG(obj.name)
+            super().save_model(request, obj, self.form, change)
+            
 admin.site.register(Province, PronviceAdmin)
 admin.site.register(Municipality, MunicipalityAdmin)
+admin.site.register(Language, LanguageAdmin)
