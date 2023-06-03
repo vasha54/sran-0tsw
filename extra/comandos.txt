@@ -37,3 +37,8 @@ python manage.py runserver
 
 //Para crear los assets
 python manage.py collectstatic
+
+//Para generar las cadenas de texto de traduccion
+django-admin makemessages  --all --ignore=env
+
+django-admin compilemessages  --ignore=env
