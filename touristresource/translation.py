@@ -1,4 +1,4 @@
-from touristresource.models import TourismType, TypeService, Schedule, InfrastructureAccess#, ValueTouristic, ScheduleService, ResourceTourist, TouristResourceImage
+from touristresource.models import TourismType, TypeService, Schedule, InfrastructureAccess, ResourceTourist#, ValueTouristic, ScheduleService, ResourceTourist, TouristResourceImage
 from modeltranslation.translator import TranslationOptions,register
 
 @register(TourismType)
@@ -17,6 +17,10 @@ class ScheduleTranslationOptions(TranslationOptions):
 class InfrastructureAccessTranslationOptions(TranslationOptions):
     fields = ['name']
     
+@register(ResourceTourist)
+class ResourceTouristTranslationOptions(TranslationOptions):
+     fields = ['name','description','comments','address']
+    
 # @register(ValueTouristic)
 # class ValueTouristicTranslationOptions(TranslationOptions):
 #     fields = ['value','description']
@@ -27,9 +31,7 @@ class InfrastructureAccessTranslationOptions(TranslationOptions):
 # class ScheduleServiceTranslationOptions(TranslationOptions):
 #     fields = ['name']
     
-# @register(ResourceTourist)
-# class ResourceTouristTranslationOptions(TranslationOptions):
-#     fields = ['name','description','history']
+
     
 # @register(TouristResourceImage)
 # class ResourTouristResourceImageTranslationOptions(TranslationOptions):

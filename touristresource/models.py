@@ -3,6 +3,14 @@ import os
 
 from django.db import models
 from django.db.models import Q
+from django.contrib.gis.geos import Point
+from django.contrib.gis.db import models
+
+
+DEFAULT_LOCATION_POINT = Point(-104.9903, 39.7392)
+
+from country.models import Municipality
+
 
 # Create your models here.
 
@@ -130,7 +138,32 @@ class ManagerInfrastructureAccess(models.Manager):
         return exist
     
 class ManagerResourceTourist(models.Manager):
-    pass
+    def searchPattern(self,_patterSearch=None):
+        _patterSearch = str(_patterSearch).strip()
+        resourcetourists = None
+        
+        if _patterSearch != None and len(_patterSearch)!=0:
+            filter = Q(name__contains=_patterSearch)
+            filter = Q(filter | Q(description__contains=_patterSearch))
+            filter = Q(filter | Q(comments__contains=_patterSearch))
+            resourcetourists = self.filter(filter)
+        else:
+            resourcetourists = self.all()
+        
+        return resourcetourists
+    
+    def existThisSLUG(self, _slug,_pk=None):
+        exist = False
+        count = 0
+        
+        if _pk == None:
+            count = self.filter(slug = _slug).count()
+        else:
+            count = self.exclude(pk=_pk).filter(slug = _slug).count()    
+        
+        if count != 0:
+            exist = True
+        return exist
 
 class TourismType(models.Model):
     idTT = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -231,9 +264,23 @@ class InfrastructureAccess(models.Model):
         return f'{self.name}'
 
 class ResourceTourist(models.Model):
+    
      idRT = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+     name = models.CharField("Nombre", null=False, blank=False,max_length=30,default='')
+     slug = models.CharField("slug", null=False,max_length=30,unique=True)
+     description = models.TextField("Descripción", null=False, blank=False, max_length=10000)
+     address = models.TextField("Dirección", null=False, blank=False, max_length=10000)
+     comments = models.TextField("Otros comentarios", null=False, blank=True, max_length=10000,default='')
+     idMunicipality = models.ForeignKey(Municipality,related_name='resourcetourists',verbose_name="Municipio",on_delete=models.CASCADE)
+     geoLocLat = models.DecimalField("Latitud",default=0.0,decimal_places=8, max_digits=15)
+     geoLocLon = models.DecimalField("Longitud",default=0.0,decimal_places=8, max_digits=15)
+     
      
      objects = ManagerResourceTourist()
+     
+     def __str__(self):
+         return self.name
+     
     
      class Meta:
          verbose_name = 'Recurso turístico'
@@ -242,9 +289,11 @@ class ResourceTourist(models.Model):
 class TourismTypeResourceTourist(models.Model):
     
     idTTRT = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    idResourceTourist = models.ForeignKey(ResourceTourist, verbose_name="Recurso turístico", on_delete=models.CASCADE) 
+    idResourceTourist = models.ForeignKey(ResourceTourist, verbose_name="Recurso turístico",related_name='type_tourist', on_delete=models.CASCADE) 
     idTourismType = models.ForeignKey(TourismType, verbose_name="Tipo de turismo", on_delete=models.CASCADE)
     
+    def __str__(self):
+         return str(self.idResourceTourist)+' ( '+str(self.idTourismType)+' )'
     class Meta:
         verbose_name = 'Tipo de turismo del recurso turístico'
         verbose_name_plural = 'Tipos de turismo del recurso turístico'
@@ -260,8 +309,11 @@ class TourismTypeResourceTourist(models.Model):
 class InfrastructureAccessResourceTourist(models.Model):
     
     idIART = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    idResourceTourist = models.ForeignKey(ResourceTourist, verbose_name="Recurso turístico", on_delete=models.CASCADE) 
+    idResourceTourist = models.ForeignKey(ResourceTourist, verbose_name="Recurso turístico",related_name='infrastructure_access', on_delete=models.CASCADE) 
     idInfrastructureAccess = models.ForeignKey(InfrastructureAccess, verbose_name="Infraestructura de acceso", on_delete=models.CASCADE)
+    
+    def __str__(self):
+         return str(self.idResourceTourist)+' ( '+str(self.idInfrastructureAccess)+' )'
     
     class Meta:
         verbose_name = 'Infraestructura de acceso del recurso turístico'
@@ -277,9 +329,12 @@ class InfrastructureAccessResourceTourist(models.Model):
         
 class Service(models.Model):
     idService = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    idResourceTourist = models.ForeignKey(ResourceTourist,verbose_name="Recurso turístico",on_delete=models.CASCADE)
-    idTypeService = models.ForeignKey(TypeService,verbose_name="Tipo de servicio",on_delete=models.CASCADE)
-    idSchedule = models.ForeignKey(Schedule,verbose_name="Horario del servicio",on_delete=models.CASCADE)
+    idResourceTourist = models.ForeignKey(ResourceTourist,verbose_name="Recurso turístico",related_name='services',on_delete=models.CASCADE)
+    idTypeService = models.ForeignKey(TypeService,verbose_name="Tipo de servicio",related_name='type_service',on_delete=models.CASCADE)
+    idSchedule = models.ForeignKey(Schedule,verbose_name="Horario del servicio",related_name='schedule',on_delete=models.CASCADE)
+    
+    def __str__(self):
+         return str(self.idResourceTourist)+' ( '+str(self.idTypeService)+', '+str(self.idSchedule)+' )'
     
     class Meta:
         verbose_name = 'Servicio'
@@ -295,8 +350,11 @@ class Service(models.Model):
         
 class MediaResourceTourist(models.Model):
     idMediaRT = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    idResourceTourist = models.ForeignKey(ResourceTourist,verbose_name="Recurso turístico",on_delete=models.CASCADE)
+    idResourceTourist = models.ForeignKey(ResourceTourist,verbose_name="Recurso turístico",related_name='medias',on_delete=models.CASCADE)
     
+    
+    def __str__(self):
+         return ' '
     class Meta:
         verbose_name = 'Media del Recurso Turístico'
         verbose_name_plural = 'Medias de los Recursos Turísticos'
@@ -305,6 +363,32 @@ class MediaImageRT(MediaResourceTourist):
     image= models.ImageField(verbose_name="Imagen del recurso",upload_to=renameFile,null=False)
     directorySave = 'images_resources'
     
+    def __str__(self):
+         return self.image.url
+    
+    class Meta:
+        verbose_name = 'Imagen del Recurso Turístico'
+        verbose_name_plural = 'Imágenes del Recurso Turístico'
+    
+class ResourceTouristCloset(models.Model):
+    idResourceTouristCloset = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    idRTSource=models.ForeignKey(ResourceTourist,related_name='id_rt_source', verbose_name="Recurso Turístico origen",on_delete=models.CASCADE)
+    idRTTo = models.ForeignKey(ResourceTourist,related_name='id_rt_to',verbose_name="Recurso Turistico destino",on_delete=models.CASCADE)
+    
+    class Meta:
+        verbose_name = 'Recurso Turístico cercano'
+        verbose_name_plural = 'Recursos Turísticos cercanos'
+        ordering = ('idResourceTouristCloset','idRTSource','idRTTo')
+        constraints = [
+            models.UniqueConstraint(
+                fields=['idRTSource','idRTTo'], 
+                name='unique_resource_tourist_closet',
+                deferrable=models.Deferrable.DEFERRED,
+            )
+        ]
+    
+
+
 
 # class ManagerValueTouristic(models.Manager):
     
