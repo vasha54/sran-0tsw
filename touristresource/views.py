@@ -13,7 +13,9 @@ from django.template.loader import get_template
 from io import BytesIO
 import os
 
-from touristresource.models import ResourceTourist
+from touristresource.models import ResourceTourist,InfrastructureAccessResourceTourist,TourismTypeResourceTourist,TouristAttractionResourceTourist
+
+from country.models import Language
 
 from core.util import generateQRTouristResource
 from core import settings
@@ -117,11 +119,24 @@ class ResourceTouristView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self,request, pk,*args, **kwargs):
-        data ={}
+        languages = Language.objects.all().order_by('name_es')
+        data ={'languages':languages}
+        try :
+            resource = ResourceTourist.objects.get(pk=pk)
+            attractions = TouristAttractionResourceTourist.objects.filter(idResourceTourist=pk)
+            type_tourism = TourismTypeResourceTourist.objects.filter(idResourceTourist=pk)
+            infraestructures = InfrastructureAccessResourceTourist.objects.filter(idResourceTourist=pk)
+            data['resource'] = resource
+            data['attractions'] = attractions
+            data['infraestructures'] = infraestructures
+            data['typetourism'] = type_tourism
+        except ResourceTourist.DoesNotExist:
+            pass
         return render(request,self.template_name,data)
     
     def post(self,request, pk,*args, **kwargs):
-        data ={}
+        languages = Language.objects.all().order_by('pk')
+        data ={'languages':languages}
         return render(request,self.template_name,data)
 
 def updateQRThisResourceTourist(request,pk,*arg,**kwargs):

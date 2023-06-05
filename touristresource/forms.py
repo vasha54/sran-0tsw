@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from touristresource.models import TourismType, TypeService, Schedule, InfrastructureAccess, ResourceTourist #, ValueTouristic, ScheduleService
+from touristresource.models import TourismType, TouristAttraction, TypeService, Schedule, InfrastructureAccess, ResourceTourist #, ValueTouristic, ScheduleService
 
 from django.contrib.gis.geos import Point
 
@@ -12,6 +12,30 @@ from django.contrib.gis.geos import Point
 
 from core import util
 
+class TouristAttractionForm(forms.ModelForm):
+    
+    def __init__(self,*arg,**kwargs):
+        super(TouristAttractionForm,self).__init__(*arg,**kwargs)
+        
+    class Meta:
+        model = TouristAttraction
+        #fields = ['name', 'description']
+        exclude = ['idTP','slug']
+        
+    def clean_name_es(self):
+        val = self.cleaned_data['name_es']
+        slugNew = util.generateSLUG(val)
+        exist = False
+        if self.instance != None:
+            exist = TouristAttraction.objects.existThisSLUG(slugNew,self.instance.pk)
+        else:
+            exist = TouristAttraction.objects.existThisSLUG(slugNew)
+            
+            
+        if exist == True:
+            raise  forms.ValidationError("El atractivo turístico es similar a uno ya existente")
+        return val
+    
 class TourismTypeForm(forms.ModelForm):
     
     def __init__(self,*arg,**kwargs):
