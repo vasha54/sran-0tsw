@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-02 22:22-0400\n"
+"POT-Creation-Date: 2023-06-03 22:50-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,56 +37,62 @@ msgstr ""
 #: template/admin/details/resource_tourist_details.html:10
 #: template/admin/details/resource_tourist_qrs.html:10
 msgid "Home"
-msgstr ""
+msgstr "Portada"
 
 #: template/base.html:11
 msgid "title-page"
 msgstr ""
 
-#: template/base.html:70
-msgid "spanish"
-msgstr "Español"
-
-#: template/base.html:78
-msgid "english"
-msgstr "Inglés"
-
-#: template/base.html:87
-msgid "russian"
-msgstr "Ruso"
-
-#: template/base.html:96
-msgid "frances"
-msgstr "Fancés"
-
-#: template/base.html:141
+#: template/details/resource_tourist.html:19
 msgid "name_resource_tourist"
-msgstr ""
+msgstr "Nombre"
 
-#: template/base.html:163
+#: template/details/resource_tourist.html:41
 msgid "location_resource_tourist"
-msgstr ""
+msgstr "Ubicación"
 
-#: template/base.html:188
+#: template/details/resource_tourist.html:66
 msgid "description_resource_tourist"
-msgstr ""
+msgstr "Descripción"
 
-#: template/base.html:213
+#: template/details/resource_tourist.html:90
 msgid "comments_resource_tourist"
-msgstr ""
+msgstr "Otros comentarios"
 
-#: template/base.html:284
+#: template/details/resource_tourist.html:120
 msgid "gallery_picture_resource_tourist"
-msgstr ""
+msgstr "Galería de imágenes"
 
-#: template/base.html:347
+#: template/details/resource_tourist.html:162
 msgid "maps_location"
-msgstr ""
+msgstr "Localización en el mapa"
 
-#: template/base.html:425
+
+#: template/details/resource_tourist.html:220
 msgid "service_resource_tourist"
-msgstr ""
+msgstr "Servicios que brinda"
 
-#: template/base.html:488
+#: template/details/resource_tourist.html:287
 msgid "suggestion_resource_tourist"
-msgstr ""
+msgstr "Sugerencias cercanas"
+
+msgid "infrastructure_access_resource_tourist"
+msgstr "Infraestructura de acceso"
+
+msgid "longitude"
+msgstr "Longitud"
+
+msgid "latitude"
+msgstr "Latitud"
+
+#~ msgid "spanish"
+#~ msgstr "Español"
+
+#~ msgid "english"
+#~ msgstr "Inglés"
+
+#~ msgid "russian"
+#~ msgstr "Ruso"
+
+#~ msgid "frances"
+#~ msgstr "Fancés"

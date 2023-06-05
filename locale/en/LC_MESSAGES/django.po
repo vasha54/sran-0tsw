@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-02 22:22-0400\n"
+"POT-Creation-Date: 2023-06-03 22:50-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,73 +20,73 @@ msgstr ""
 
 #: core/settings.py:167
 msgid "Español"
-msgstr ""
+msgstr "Spanish"
 
 #: core/settings.py:168
 msgid "English"
-msgstr ""
+msgstr "English"
 
 #: core/settings.py:169
 msgid "Ruso"
-msgstr ""
+msgstr "Russian"
 
 #: core/settings.py:170
 msgid "Frances"
-msgstr ""
+msgstr "Frances"
 
 #: template/admin/details/resource_tourist_details.html:10
 #: template/admin/details/resource_tourist_qrs.html:10
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #: template/base.html:11
 msgid "title-page"
 msgstr ""
 
-#: template/base.html:70
-msgid "spanish"
-msgstr "Spanish"
-
-#: template/base.html:78
-msgid "english"
-msgstr "English"
-
-#: template/base.html:87
-msgid "russian"
-msgstr "Russian"
-
-#: template/base.html:96
-msgid "frances"
-msgstr "Frances"
-
-#: template/base.html:141
+#: template/details/resource_tourist.html:19
 msgid "name_resource_tourist"
-msgstr ""
+msgstr "Name"
 
-#: template/base.html:163
+#: template/details/resource_tourist.html:41
 msgid "location_resource_tourist"
-msgstr ""
+msgstr "Location"
 
-#: template/base.html:188
+#: template/details/resource_tourist.html:66
 msgid "description_resource_tourist"
-msgstr ""
+msgstr "Description"
 
-#: template/base.html:213
+#: template/details/resource_tourist.html:90
 msgid "comments_resource_tourist"
-msgstr ""
+msgstr "Other comments"
 
-#: template/base.html:284
+#: template/details/resource_tourist.html:120
 msgid "gallery_picture_resource_tourist"
-msgstr ""
+msgstr "Image gallery"
 
-#: template/base.html:347
+#: template/details/resource_tourist.html:162
 msgid "maps_location"
-msgstr ""
+msgstr "Location on the map"
 
-#: template/base.html:425
+#: template/details/resource_tourist.html:198
+msgid "infrastructure_access_resource_tourist"
+msgstr "Access infrastructure"
+
+#: template/details/resource_tourist.html:220
 msgid "service_resource_tourist"
-msgstr ""
+msgstr "Services it offers"
 
-#: template/base.html:488
+#: template/details/resource_tourist.html:287
 msgid "suggestion_resource_tourist"
-msgstr ""
+msgstr "Nearby suggestion"
+
+msgid "longitude"
+msgstr "Longitude"
+
+msgid "latitude"
+msgstr "Latitude"
+
+#~ msgid "russian"
+#~ msgstr "Russian"
+
+#~ msgid "frances"
+#~ msgstr "Frances"
