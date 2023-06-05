@@ -329,8 +329,8 @@ class ResourceTourist(models.Model):
      address = models.TextField("Dirección", null=False, blank=False, max_length=10000)
      comments = models.TextField("Otros comentarios", null=False, blank=True, max_length=10000,default='')
      idMunicipality = models.ForeignKey(Municipality,related_name='resourcetourists',verbose_name="Municipio",on_delete=models.CASCADE)
-     geoLocLat = models.DecimalField("Latitud",default=0.0,decimal_places=8, max_digits=15)
-     geoLocLon = models.DecimalField("Longitud",default=0.0,decimal_places=8, max_digits=15)
+     geoLocLat = models.DecimalField("Latitud",default=0.0,decimal_places=21, max_digits=25)
+     geoLocLon = models.DecimalField("Longitud",default=0.0,decimal_places=21, max_digits=25)
      
      
      objects = ManagerResourceTourist()

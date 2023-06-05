@@ -12,6 +12,8 @@ from django.contrib.gis.geos import Point
 
 from core import util
 
+import re
+
 class TouristAttractionForm(forms.ModelForm):
     
     def __init__(self,*arg,**kwargs):
@@ -133,9 +135,8 @@ class InfrastructureAccessForm(forms.ModelForm):
         return val
     
 class ResourceTouristForm(forms.ModelForm):
-    location = PlainLocationField(based_fields=['city'],label="Localización geográfica",
-                             initial=Point(-49.1607606, -22.2876834))
-    hasImages = forms.BooleanField(required=False,initial=False,label='Tiene imagen ?')
+    location = PlainLocationField(based_fields=['city'],label="Localización geográfica (Latitud,Longitud)",
+                             initial=Point(-81.57299137674273, 23.04711172670867))
     
     def __init__(self, *args, **kwargs):
         super(ResourceTouristForm, self).__init__(*args, **kwargs)
@@ -161,6 +162,10 @@ class ResourceTouristForm(forms.ModelForm):
     
     def clean_location(self):
         val = self.cleaned_data['location']
+        pattern = re.compile(r'\bPyWombat\b')
+        pattern = re.compile(r"[-]{0,1}(\d+).(\d+),[-]{0,1}(\d+).(\d+)")
+        if pattern.match(val)==False:
+            raise  forms.ValidationError("El campo de ubicacion geografica no cumple con el patron requerido (latitud,longitud).")
         return val
     
 

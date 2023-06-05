@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.html import format_html
+
 from modeltranslation.admin import TranslationAdmin
 from core import util
 from core.settings import ITEM_PER_PAGE
@@ -52,12 +54,17 @@ class MunicipalityAdmin(TranslationAdmin):
             
 class LanguageAdmin(TranslationAdmin):
     list_per_page = ITEM_PER_PAGE
-    list_display=['name','ISO639v1']
+    list_display=['flags','ISO639v1']
     search_fields = ['name__contains']
     
     form = LanguageForm
     model = Language
     group_fieldsets = True
+    
+    def flags(self,_obj):
+        if _obj.flag !=None :
+            return format_html('<img src="{}" width="24px" height="24px">  {}',_obj.flag.url,_obj.name)
+    flags.short_description = "Nombre"
     
     class Media:
         pass
