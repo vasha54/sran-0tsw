@@ -177,24 +177,13 @@
               <div class="card info-card customers-card">
                 <div class="card-body">
                   <div class="accordion accordion-flush" id="accordionMapLocations">
-                    <h5 class="accordion-header card-title accordion-button" type="button" id="headingMapLocations" data-bs-toggle="collapse" data-bs-target="#collapseMapLocations" aria-expanded="false" aria-controls="collapseMapLocations">
+                    <h5 class="accordion-header card-title accordion-button" type="button" id="headingMapLocations" data-bs-toggle="collapse" data-bs-target="#collapseMapLocations" aria-expanded="true" aria-controls="collapseMapLocations">
                       {% trans 'maps_location' %} 
                     </h5>
-                    <div id="collapseMapLocations" class="accordion-collapse collapse" aria-labelledby="headingMapLocations" data-bs-parent="#accordionMapLocations" style="">
+                    <div id="collapseMapLocations" class="accordion-collapse" aria-labelledby="headingMapLocations" data-bs-parent="#accordionMapLocations" style="">
                       <div class="accordion-body">
                         <div class="d-flex align-items-center">
-                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                            <i class="bi bi-chat-right-text"></i>
-                          </div>
-                          <div class="ps-3">
-                            <span class="text-muted large pt-2 ps-1">
-                              This is the first item's accordion body. It is hidden by default, until the collapse plugin 
-                              adds the appropriate classes that we use to style each element. These classes control the overall 
-                              appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with 
-                              custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go 
-                              within the .accordion-body, though the transition does limit overflow. 
-                            </span>
-                          </div>
+                            <div id="map" style="width: 100%; height: 300px;"></div>
                         </div>
                       </div>
                     </div>
@@ -354,4 +343,22 @@
 
       </div>
     </section>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    <script src="{% static js %}js/gmaps.js"></script>
+    <script>
+        $(document).ready(function (){
+          var latResource =JSON.parse("{{resource.geoLocLat|escapejs}}");
+          var lonResource =JSON.parse("{{resource.geoLocLon|escapejs}}");
+          var map = new GMaps({
+            el: '#map',
+            lat: latResource,
+            lng: lonResource,
+            zoom: 15,
+          });
+          map.removeLayer('places');
+        });
+    </script>
 {% endblock %}

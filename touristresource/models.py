@@ -332,7 +332,7 @@ class ResourceTourist(models.Model):
      geoLocLat = models.DecimalField("Latitud",default=0.0,decimal_places=21, max_digits=25)
      geoLocLon = models.DecimalField("Longitud",default=0.0,decimal_places=21, max_digits=25)
      
-     
+    
      objects = ManagerResourceTourist()
      
      def __str__(self):

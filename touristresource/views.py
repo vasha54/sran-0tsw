@@ -131,7 +131,9 @@ class ResourceTouristView(View):
             data['attractions'] = attractions
             data['infraestructures'] = infraestructures
             data['typetourism'] = type_tourism
-            data['images']= images
+            data['images'] = images
+            data['latLocation'] = resource.geoLocLat
+            data['lonLocation'] = resource.geoLocLon 
         except ResourceTourist.DoesNotExist:
             pass
         return render(request,self.template_name,data)
