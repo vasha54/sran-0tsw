@@ -285,8 +285,6 @@ JAZZMIN_SETTINGS = {
         "auth.user": "fas fa-user",
         "auth.Group": "fas fa-users",
         
-        
-        
         'accescontrol': 'fas fa-users-cog',
         'accescontrol.userdrpa': 'fas fa-users',
         'accescontrol.role':'fas fa-id-card',
@@ -296,18 +294,18 @@ JAZZMIN_SETTINGS = {
         'country.province':'fas fa-map',
         'country.municipality':'fas fa-map-marked',
         
-        
-        
         'touristresource':'fas fa-landmark',
         'touristresource.schedule':'fas fa-clock',
         'touristresource.typeservice':'fas fa-hand-holding',
         'touristresource.tourismtype':'fas fa-mountain',
-        'touristresource.valuetouristic':'fas fa-gem',
-        'touristresource.touristresourceimage':'fas fa-images',
+        'touristresource.touristattraction':'fas fa-gem',
+        'touristresource.mediaimagert':'fas fa-images',
         'touristresource.touristresourcevideo':'fas fa-video',
         'touristresource.resourcetourist':'fas fa-landmark',
         'touristresource.service':'fas fa-store',
-        'touristresource.valueresourcetourist':'fas fa-icons',
+        'touristresource.infrastructureaccess':'fas fa-bicycle',
+        'touristresource.infrastructureaccessresourcetourist':'fas fa-biking',
+        'touristresource.touristattractionresourcetourist':'fas fa-icons',
         'touristresource.tourismtyperesourcetourist':'fas fa-suitcase-rolling',
     },
     # Icons that are used when one is not manually specified

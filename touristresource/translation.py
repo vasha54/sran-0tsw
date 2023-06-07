@@ -1,4 +1,4 @@
-from touristresource.models import TouristAttraction, TourismType, TypeService, Schedule, InfrastructureAccess, ResourceTourist#, ValueTouristic, ScheduleService, ResourceTourist, TouristResourceImage
+from touristresource.models import MediaImageRT,TouristAttraction, TourismType, TypeService, Schedule, InfrastructureAccess, ResourceTourist#, ValueTouristic, ScheduleService, ResourceTourist, TouristResourceImage
 from modeltranslation.translator import TranslationOptions,register
 
 @register(TouristAttraction)
@@ -25,6 +25,9 @@ class InfrastructureAccessTranslationOptions(TranslationOptions):
 class ResourceTouristTranslationOptions(TranslationOptions):
      fields = ['name','description','comments','address']
     
+@register(MediaImageRT)
+class MediaImageRTTranslationOptions(TranslationOptions):
+     fields = []
 
     
     

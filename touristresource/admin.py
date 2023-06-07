@@ -1,12 +1,15 @@
 from django.contrib import admin
 from django.urls import path, reverse
 from django.utils.html import format_html
+from django.db.models import Value, Count
+from django.db.models.functions import Concat
 
 from touristresource.models import  TouristAttraction, TouristAttractionResourceTourist, TourismType, TourismTypeResourceTourist, TypeService, Schedule, InfrastructureAccess, ResourceTourist,MediaImageRT, InfrastructureAccessResourceTourist,Service #, ResourceTourist, ScheduleService, Service, TouristResourceVideo, TouristResourceImage, ValueTouristic, ValueResourceTourist, TourismTypeResourceTourist
 from touristresource.forms import TouristAttractionForm,TourismTypeForm ,TypeServiceForm, ScheduleForm, InfrastructureAccessForm, ResourceTouristForm#, ValueTouristicForm, ScheduleServiceForm
 from touristresource.views import ResourceTouristDetailsView,ResourceTouristQRsView,ResourceTouristQRPrintView,updateQRThisResourceTourist
 
 from modeltranslation.admin import TranslationAdmin
+
 
 from core import util
 from core.settings import ITEM_PER_PAGE
@@ -153,7 +156,7 @@ class ResourceTouristServiceInline(admin.TabularInline):
 
 class ResourceTouristAdmin(TranslationAdmin):
     list_per_page = ITEM_PER_PAGE
-    list_display=['name','idMunicipality','geoLocLat','geoLocLon','service','links']
+    list_display=['name','idMunicipality','service','links']
     search_fields = ['name__contains','description__contains','comments__contains','address__contains','idMunicipality__name']
     
     inlines = [ResourceTouristTourismTypeInline,ResourceTouristTouristAttractionInline,ResourceTouristInfrastructureAccessInline,ResourceTouristServiceInline,ResourceTouristImageInline]
@@ -169,6 +172,14 @@ class ResourceTouristAdmin(TranslationAdmin):
             ("Descripción",{"fields": ("description",)},),
             ("Otros comentarios",{"fields": ("comments",)},),
         )
+    
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.annotate(
+            _countService=Count('services'),
+        )
+
+        return queryset
     
     def links(self,_obj):
         urlViewDetails = reverse("admin:resource_tourist_view_details", args=[_obj.pk])
@@ -193,8 +204,9 @@ class ResourceTouristAdmin(TranslationAdmin):
     links.short_description=''
     
     def service(self,_obj):
-        return ''
+        return _obj.countServices()
     service.short_description='Servicios'
+    service.admin_order_field = "_countService"
     
     def save_model(self, request, obj, form, change):
         
@@ -208,6 +220,7 @@ class ResourceTouristAdmin(TranslationAdmin):
             super().save_model(request, obj, self.form, change)
             util.generateQRTouristResource(request, obj,True)
             util.generateQRTouristResource(request, obj,False)
+            obj.searchResourceTouristCloset()
     
     def get_urls(self):
         return [
@@ -222,7 +235,27 @@ class ResourceTouristAdmin(TranslationAdmin):
             *super().get_urls(),
         ]
 
-admin.site.register(MediaImageRT)
+
+class MediaImageRTAdmin(TranslationAdmin):
+    
+    list_per_page = ITEM_PER_PAGE
+    list_display=['photo','resource']
+    search_fields = ['idResourceTourist__name']
+    
+    model = MediaImageRT
+    group_fieldsets = True
+    
+    def photo(self,_obj):
+        return format_html('<img  src="{}" style="width:75px; height:50px;">',_obj.image.url)
+    photo.short_description='Imagen'
+    
+    @admin.display(ordering='idResourceTourist__name')
+    def resource(self,_obj):
+        return _obj.idResourceTourist.name
+    resource.short_description='Recurso Turístico'
+    
+
+admin.site.register(MediaImageRT,MediaImageRTAdmin)
 admin.site.register(TouristAttractionResourceTourist)
 admin.site.register(InfrastructureAccessResourceTourist)
 admin.site.register(TourismTypeResourceTourist)

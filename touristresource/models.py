@@ -224,9 +224,9 @@ class TouristAttraction(models.Model):
 
 class TourismType(models.Model):
     idTT = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField("Nombre", null=False, blank=False,max_length=30,default='')
+    name = models.CharField("Nombre", null=False, blank=False,max_length=100,default='')
     description = models.TextField("Descripción", null=False, blank=True, max_length=10000)
-    slug = models.CharField("slug", null=False,max_length=30,unique=True)
+    slug = models.CharField("slug", null=False,max_length=100,unique=True)
     
     objects = ManagerTourismType()
     
@@ -323,8 +323,8 @@ class InfrastructureAccess(models.Model):
 class ResourceTourist(models.Model):
     
      idRT = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-     name = models.CharField("Nombre", null=False, blank=False,max_length=30,default='')
-     slug = models.CharField("slug", null=False,max_length=30,unique=True)
+     name = models.CharField("Nombre", null=False, blank=False,max_length=100,default='')
+     slug = models.CharField("slug", null=False,max_length=100,unique=True)
      description = models.TextField("Descripción", null=False, blank=False, max_length=10000)
      address = models.TextField("Dirección", null=False, blank=False, max_length=10000)
      comments = models.TextField("Otros comentarios", null=False, blank=True, max_length=10000,default='')
@@ -337,6 +337,12 @@ class ResourceTourist(models.Model):
      
      def __str__(self):
          return self.name
+     
+     def searchResourceTouristCloset(self):
+         pass
+     
+     def countServices(self):
+         return Service.objects.filter(idResourceTourist=self.pk).count()
      
     
      class Meta:
