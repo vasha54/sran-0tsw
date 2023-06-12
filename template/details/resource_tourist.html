@@ -55,10 +55,30 @@
                 </div>
 
               </div>
+            </div>
+            
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">  {% trans 'attractive_resource_tourist' %} </h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-geo-alt"></i>
+                    </div>
+                    <div class="ps-3">
+                      <span class="text-muted small pt-2">{% trans  resource.address %}. {% trans  resource.idMunicipality.name %}, {% trans  resource.idMunicipality.idProvince.name %}.</span><br>
+                      <span class="text-muted small pt-2"><span class="fw-bold">{%trans 'latitude' %}:</span> {{resource.geoLocLat|floatformat:"13"}} <br><span class="fw-bold">{% trans  'longitude' %}:</span> {{resource.geoLocLon|floatformat:"13"}}</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </div><!-- End Revenue Card -->
 
             <!-- Customers Card -->
-            <div class="col-xxl-4 col-xl-12">
+            <div class="col-xxl-12 col-xl-12">
 
               <div class="card info-card customers-card">
 
@@ -183,7 +203,7 @@
                     <div id="collapseMapLocations" class="accordion-collapse" aria-labelledby="headingMapLocations" data-bs-parent="#accordionMapLocations" style="">
                       <div class="accordion-body">
                         <div class="d-flex align-items-center">
-                            <div id="map" style="width: 100%; height: 300px;"></div>
+                            <div id="map" style="width: 100%; height: 450px;"></div>
                         </div>
                       </div>
                     </div>
@@ -358,7 +378,7 @@
             lng: lonResource,
             zoom: 15,
           });
-          map.removeLayer('places');
+          map.removeMarkers();
         });
     </script>
 {% endblock %}

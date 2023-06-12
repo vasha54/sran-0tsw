@@ -90,4 +90,4 @@ class ResourceTouristSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ResourceTourist
-        fields = ['name','slug','description','address','comments','geoLocLat','geoLocLon','idMunicipality','services','attractions','infrastructure_access','medias']
+        fields = ['name','slug','description','address','comments','geoLocLat','geoLocLon','idMunicipality','services','attractions','infrastructure_access','medias','type_tourism']

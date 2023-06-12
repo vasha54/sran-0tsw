@@ -79,6 +79,9 @@ msgstr "Services it offers"
 msgid "suggestion_resource_tourist"
 msgstr "Nearby suggestion"
 
+msgid "attractive_resource_tourist"
+msgstr "Attractions of the place"
+
 msgid "longitude"
 msgstr "Longitude"
 

@@ -84,3 +84,6 @@ msgstr "Longueur"
 
 msgid "latitude"
 msgstr "Latitude"
+
+msgid "attractive_resource_tourist"
+msgstr "Attraits du lieu"

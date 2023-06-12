@@ -86,3 +86,6 @@ msgstr "Длина"
 
 msgid "latitude"
 msgstr "Широта"
+
+msgid "attractive_resource_tourist"
+msgstr "достопримечательности этого места"
