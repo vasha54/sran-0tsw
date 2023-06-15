@@ -3,11 +3,11 @@ import os
 
 from django.db import models
 from django.db.models import Q
-from django.contrib.gis.geos import Point
-from django.contrib.gis.db import models
+#from django.contrib.gis.geos import Point
+#from django.contrib.gis.db import models
 
 
-DEFAULT_LOCATION_POINT = Point(-104.9903, 39.7392)
+#DEFAULT_LOCATION_POINT = Point(-104.9903, 39.7392)
 
 from country.models import Municipality
 
