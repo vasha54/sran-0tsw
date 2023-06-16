@@ -6,7 +6,11 @@
       <div class="row">
 
         <!-- Left side columns -->
+        {% if services or suggestions %}
         <div class="col-lg-8">
+        {% else %}
+        <div class="col-lg-12">
+        {% endif %} 
           <div class="row">
 
             <!-- Sales Card -->
@@ -65,7 +69,7 @@
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-geo-alt"></i>
+                      <i class="bi bi-info-circle"></i>
                     </div>
                     <div class="ps-3">
                       <span class="text-muted small pt-2">{% trans  resource.address %}. {% trans  resource.idMunicipality.name %}, {% trans  resource.idMunicipality.idProvince.name %}.</span><br>
@@ -76,6 +80,30 @@
 
               </div>
             </div><!-- End Revenue Card -->
+
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                
+
+                <div class="card-body">
+                  <h5 class="card-title"> {% trans 'infrastructure_access_resource_tourist' %} </h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-bicycle"></i>
+                    </div>
+                    <div class="ps-3">
+                      {% for structure in infraestructures %}
+                        <span class="badge bg-primary">{% trans structure.idInfrastructureAccess.name %}</span>
+                      {% endfor %}
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
 
             <!-- Customers Card -->
             <div class="col-xxl-12 col-xl-12">
@@ -215,32 +243,11 @@
         </div><!-- End Left side columns -->
 
         <!-- Right side columns -->
+        {% if services or suggestions %}
         <div class="col-lg-4">
            
-            <div class="col-12">
-              <div class="card info-card sales-card">
-
-                
-
-                <div class="card-body">
-                  <h5 class="card-title"> {% trans 'infrastructure_access_resource_tourist' %} </h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-bicycle"></i>
-                    </div>
-                    <div class="ps-3">
-                      {% for structure in infraestructures %}
-                        <span class="badge bg-primary">{% trans structure.idInfrastructureAccess.name %}</span>
-                      {% endfor %}
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
+            
+          {% if services %}
           <div class="col-12">
               <div class="card info-card customers-card">
                 <div class="card-body">
@@ -251,54 +258,21 @@
                     <div id="collapseService" class="accordion-collapse collapse" aria-labelledby="headingService" data-bs-parent="#accordionService" style="">
                       <div class="accordion-body">
                         <div class="activity">
-                          
-                          <div class="activity-item d-flex">
-                            <div class="activite-label">32 min</div>
-                            <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                            <div class="activity-content">
-                                Quia quae rerum <a href="#" class="fw-bold text-dark">explicabo officiis</a> beatae
-                            </div>
-                          </div><!-- End activity item-->
-
-                          <div class="activity-item d-flex">
-                            <div class="activite-label">56 min</div>
-                            <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
-                            <div class="activity-content">
-                                Voluptatem blanditiis blanditiis eveniet
-                            </div>
-                          </div><!-- End activity item-->
-
-                          <div class="activity-item d-flex">
-                            <div class="activite-label">2 hrs</div>
-                            <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
-                            <div class="activity-content">
-                              Voluptates corrupti molestias voluptatem
-                            </div>
-                          </div><!-- End activity item-->
-
-                          <div class="activity-item d-flex">
-                            <div class="activite-label">1 day</div>
-                            <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
-                            <div class="activity-content">
-                              Tempore autem saepe <a href="#" class="fw-bold text-dark">occaecati voluptatem</a> tempore
-                            </div>
-                          </div><!-- End activity item-->
-
-                          <div class="activity-item d-flex">
-                            <div class="activite-label">2 days</div>
-                            <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
-                            <div class="activity-content">
-                              Est sit eum reiciendis exercitationem
-                            </div>
-                          </div><!-- End activity item-->
-
-                          <div class="activity-item d-flex">
-                            <div class="activite-label">4 weeks</div>
-                            <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
-                            <div class="activity-content">
-                              Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
-                            </div>
-                          </div><!-- End activity item-->
+                          {% for service in services%}
+                            <div class="activity-item d-flex">
+                              <div class="activite-label">{{service.idSchedule.startTime}} - {{service.idSchedule.endTime}} </div>
+                              <i class='bi bi-circle-fill activity-badge {{service.getStatus}} align-self-start'></i>
+                              <div class="activity-content">
+                                <span class="fw-bold">{% trans service.idTypeService.name %}</span>. <em>{% trans service.idTypeService.description %}</em> 
+                              </div>
+                            </div><!-- End activity item-->
+                          {% endfor  %}
+                          <!--<div>
+                            <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i> No disponible en este momento
+                            <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i> uu
+                            <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>  rr
+                          </div> -->
+                          <!-- End activity item-->
 
                         </div>
                       </div>
@@ -307,7 +281,9 @@
                 </div>
               </div>
           </div>
+          {% endif %}
 
+          {% if suggestions %}
           <div class="col-12">
               <div class="card info-card customers-card">
                 <div class="card-body">
@@ -355,12 +331,12 @@
                 </div>
               </div>
           </div>
-
+          {% endif %}
 
           
 
         </div><!-- End Right side columns -->
-
+        {% endif %}
       </div>
     </section>
 {% endblock %}

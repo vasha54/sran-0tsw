@@ -12,8 +12,9 @@ from xhtml2pdf import pisa
 from django.template.loader import get_template
 from io import BytesIO
 import os
+from datetime import datetime
 
-from touristresource.models import MediaImageRT,ResourceTourist,InfrastructureAccessResourceTourist,TourismTypeResourceTourist,TouristAttractionResourceTourist
+from touristresource.models import MediaImageRT,ResourceTourist,InfrastructureAccessResourceTourist,TourismTypeResourceTourist,TouristAttractionResourceTourist, Service
 
 from country.models import Language
 
@@ -127,6 +128,18 @@ class ResourceTouristView(View):
             type_tourism = TourismTypeResourceTourist.objects.filter(idResourceTourist=pk)
             infraestructures = InfrastructureAccessResourceTourist.objects.filter(idResourceTourist=pk)
             images = MediaImageRT.objects.filter(idResourceTourist=pk)
+            ser = Service.objects.filter(idResourceTourist=pk)
+            services= []
+            
+            status = ['text-muted','text-danger','text-warning']
+            dateNow = datetime.now()
+            
+            for s in ser:
+                s.setStatus(dateNow,status)
+                services.append(s)
+            
+            services.sort()
+            
             data['resource'] = resource
             data['attractions'] = attractions
             data['infraestructures'] = infraestructures
@@ -134,6 +147,7 @@ class ResourceTouristView(View):
             data['images'] = images
             data['latLocation'] = resource.geoLocLat
             data['lonLocation'] = resource.geoLocLon 
+            data['services'] = services
         except ResourceTourist.DoesNotExist:
             pass
         return render(request,self.template_name,data)

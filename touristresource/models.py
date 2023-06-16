@@ -3,11 +3,11 @@ import os
 
 from django.db import models
 from django.db.models import Q
-#from django.contrib.gis.geos import Point
-#from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
+from django.contrib.gis.db import models
 
 
-#DEFAULT_LOCATION_POINT = Point(-104.9903, 39.7392)
+DEFAULT_LOCATION_POINT = Point(-104.9903, 39.7392)
 
 from country.models import Municipality
 
@@ -418,6 +418,40 @@ class Service(models.Model):
     
     def __str__(self):
          return str(self.idResourceTourist)+' ( '+str(self.idTypeService)+', '+str(self.idSchedule)+' )'
+     
+    def __lt__(self, other):
+        if self.idSchedule.startTime < other.idSchedule.startTime:
+            return True
+        elif self.idSchedule.startTime > other.idSchedule.startTime:
+            return False
+        elif self.idSchedule.startTime == other.idSchedule.startTime and self.idSchedule.endTime < other.idSchedule.endTime:
+            return True
+        elif self.idSchedule.startTime == other.idSchedule.startTime and self.idSchedule.endTime > other.idSchedule.endTime:
+            return False
+        return (self.pk < other.pk)
+    
+    def setStatus(self,_timeNow,_status):
+        print(_timeNow)
+        self.status = _status[0]
+        if self.inRange(_timeNow):
+            self.status = _status[1]
+        elif self.rigthRange(_timeNow):
+            self.status = _status[2]
+    
+    def inRange(self,_timeNow):
+        if self.idSchedule.startTime.hour < _timeNow.hour and _timeNow.hour < self.idSchedule.endTime.hour:
+            return True
+        #TODO Falta definir rangos validos
+        return False
+    
+    def rigthRange(self,_timeNow):
+        if _timeNow.hour < self.idSchedule.startTime.hour:
+            return True
+        #TODO Falta definir rangos validos
+        return False
+        
+    def getStatus(self):
+        return self.status
     
     class Meta:
         verbose_name = 'Servicio'

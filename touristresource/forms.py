@@ -2,12 +2,12 @@ from django import forms
 from django.core.exceptions import ValidationError
 from touristresource.models import TourismType, TouristAttraction, TypeService, Schedule, InfrastructureAccess, ResourceTourist #, ValueTouristic, ScheduleService
 
-#from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import Point
 
 from location_field.forms.plain import PlainLocationField
 
 
-#from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import Point
 
 
 from core import util
@@ -135,8 +135,8 @@ class InfrastructureAccessForm(forms.ModelForm):
         return val
     
 class ResourceTouristForm(forms.ModelForm):
-    location = PlainLocationField(based_fields=['city'],label="Localización geográfica (Latitud,Longitud)")
-                             #initial=Point(-81.57299137674273, 23.04711172670867))
+    location = PlainLocationField(based_fields=['city'],label="Localización geográfica (Latitud,Longitud)",
+                             initial=Point(-81.57299137674273, 23.04711172670867))
     
     def __init__(self, *args, **kwargs):
         super(ResourceTouristForm, self).__init__(*args, **kwargs)
