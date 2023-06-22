@@ -28,9 +28,7 @@
                     </div>
                     <div class="ps-3">
                       <h6>{% trans resource.name %}</h6>
-                      {% for att in attractions %}
-                        <span class="badge bg-primary">{% trans att.idTouristAttraction.name %}</span>
-                      {% endfor %}
+                      
                       
 
                     </div>
@@ -72,8 +70,12 @@
                       <i class="bi bi-info-circle"></i>
                     </div>
                     <div class="ps-3">
-                      <span class="text-muted small pt-2">{% trans  resource.address %}. {% trans  resource.idMunicipality.name %}, {% trans  resource.idMunicipality.idProvince.name %}.</span><br>
-                      <span class="text-muted small pt-2"><span class="fw-bold">{%trans 'latitude' %}:</span> {{resource.geoLocLat|floatformat:"13"}} <br><span class="fw-bold">{% trans  'longitude' %}:</span> {{resource.geoLocLon|floatformat:"13"}}</span>
+                      {% for att in attractions %}
+                        <span class="badge bg-primary"> <i class="bi bi-star-fill"></i> {% trans att.idTouristAttraction.name %}</span>
+                      {% empty %}
+                        <span class="badge bg-primary"> {% trans 'not_attractive_defined' %}</span>
+                        
+                      {% endfor %}
                     </div>
                   </div>
                 </div>
@@ -96,6 +98,9 @@
                     <div class="ps-3">
                       {% for structure in infraestructures %}
                         <span class="badge bg-primary">{% trans structure.idInfrastructureAccess.name %}</span>
+                      {% empty %}
+                        <span class="badge bg-primary"> {% trans 'not_infrastructure_access_defined' %}</span>
+                       
                       {% endfor %}
 
                     </div>

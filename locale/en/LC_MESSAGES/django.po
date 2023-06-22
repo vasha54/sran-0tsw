@@ -88,6 +88,12 @@ msgstr "Longitude"
 msgid "latitude"
 msgstr "Latitude"
 
+msgid "not_infrastructure_access_defined"
+msgstr ""
+
+msgid "not_attractive_defined"
+msgstr ""
+
 #~ msgid "russian"
 #~ msgstr "Russian"
 

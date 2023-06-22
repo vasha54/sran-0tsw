@@ -85,6 +85,12 @@ msgstr "Longitud"
 msgid "latitude"
 msgstr "Latitud"
 
+msgid "not_infrastructure_access_defined"
+msgstr "Desconocido"
+
+msgid "not_attractive_defined"
+msgstr "Desconocido"
+
 msgid "attractive_resource_tourist"
 msgstr "Atractivos del lugar"
 
