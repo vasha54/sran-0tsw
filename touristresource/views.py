@@ -13,6 +13,7 @@ from django.template.loader import get_template
 from io import BytesIO
 import os
 from datetime import datetime
+import folium
 
 from touristresource.models import MediaImageRT,ResourceTourist,InfrastructureAccessResourceTourist,TourismTypeResourceTourist,TouristAttractionResourceTourist, Service
 
@@ -139,6 +140,11 @@ class ResourceTouristView(View):
                 services.append(s)
             
             services.sort()
+            #Create Map Object 
+            map = folium.Map(location=[resource.geoLocLat,resource.geoLocLon],zoom_start=18,zoom_control=False,no_touch=True)
+            folium.Marker(location=[resource.geoLocLat,resource.geoLocLon],icon=folium.Icon(color='red',icon_color='green')).add_to(map)
+            #Get Html Represention
+            map = map._repr_html_()
             
             data['resource'] = resource
             data['attractions'] = attractions
@@ -148,6 +154,7 @@ class ResourceTouristView(View):
             data['latLocation'] = resource.geoLocLat
             data['lonLocation'] = resource.geoLocLon 
             data['services'] = services
+            data['map'] = map
         except ResourceTourist.DoesNotExist:
             pass
         return render(request,self.template_name,data)
