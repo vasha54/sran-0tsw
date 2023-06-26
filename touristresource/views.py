@@ -142,7 +142,7 @@ class ResourceTouristView(View):
             services.sort()
             #Create Map Object 
             map = folium.Map(location=[resource.geoLocLat,resource.geoLocLon],zoom_start=18,zoom_control=False,no_touch=True)
-            folium.Marker(location=[resource.geoLocLat,resource.geoLocLon],icon=folium.Icon(color='red',icon_color='green')).add_to(map)
+            folium.Marker(location=[resource.geoLocLat,resource.geoLocLon]).add_to(map)
             #Get Html Represention
             map = map._repr_html_()
             

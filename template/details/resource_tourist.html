@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% load static %}{% load i18n %}
 
-
+{% block title %} {% trans resource.name %} {% endblock %}
 {% block content%}
  <section class="section dashboard">
       <div class="row">
@@ -136,7 +136,7 @@
 
             </div><!-- End Customers Card -->
 
-
+            {% if comments %}
             <div class="col-12">
               <div class="card info-card customers-card">
                 <div class="card-body">
@@ -152,11 +152,7 @@
                           </div>
                           <div class="ps-3">
                             <span class="text-muted large pt-2 ps-1">
-                              This is the first item's accordion body. It is hidden by default, until the collapse plugin 
-                              adds the appropriate classes that we use to style each element. These classes control the overall 
-                              appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with 
-                              custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go 
-                              within the .accordion-body, though the transition does limit overflow. 
+                             {% trans resource.comments %}
                             </span>
                           </div>
                         </div>
@@ -166,6 +162,7 @@
                 </div>
               </div>
             </div>
+            {% endif %}
             {% if images %}
              <div class="col-12">
               <div class="card info-card customers-card">

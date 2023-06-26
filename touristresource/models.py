@@ -6,6 +6,8 @@ from django.db.models import Q
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db import models
 
+from geopy.geocoders import ArcGIS
+from geopy.distance import geodesic
 
 DEFAULT_LOCATION_POINT = Point(-104.9903, 39.7392)
 
@@ -338,8 +340,18 @@ class ResourceTourist(models.Model):
      def __str__(self):
          return self.name
      
+     
+     
      def searchResourceTouristCloset(self):
-         pass
+         resourceTourists = ResourceTourist.objects.exclude(pk=self.pk)
+         coordsA =((self.geoLocLat,self.geoLocLon))
+         for res in resourceTourists:
+             coordsB =((res.geoLocLat,res.geoLocLon))
+             dist = geodesic(coordsA,coordsB).km
+             print(self,res,dist)
+             #TODO Falta bien calcular la distancia entre dos recursos turisticos
+             # en caso que la distancia sea menor que 100 m y no estan vinculados en una
+             # tupla en la entidad ResourceTouristCloset
      
      def countServices(self):
          return Service.objects.filter(idResourceTourist=self.pk).count()

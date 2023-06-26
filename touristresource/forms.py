@@ -135,8 +135,8 @@ class InfrastructureAccessForm(forms.ModelForm):
         return val
     
 class ResourceTouristForm(forms.ModelForm):
-    location = PlainLocationField(based_fields=['city'],label="Localización geográfica (Latitud,Longitud)")
-                             #initial=Point(-81.57299137674273, 23.04711172670867))
+    location = PlainLocationField(based_fields=['city'],label="Localización geográfica (Latitud,Longitud)",
+                             initial=Point(-81.57299137674273, 23.04711172670867))
     
     def __init__(self, *args, **kwargs):
         super(ResourceTouristForm, self).__init__(*args, **kwargs)
